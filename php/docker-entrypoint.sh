@@ -11,12 +11,10 @@ else
   echo "✅ Laravel project already exists. Skipping create-project."
 fi
 
-# Step 2: If .env file doesn't exist, create and add necessary environment variables
-# Check if the .env file exists
+# Step 2: Create .env only if it does not exist
 if [ ! -f /var/www/html/.env ]; then
   echo "📄 Creating .env file with environment variables..."
 
-  # Create .env file with the required values
   cat <<EOF > /var/www/html/.env
 APP_NAME="${PROJECT_NAME}"
 APP_ENV=local
@@ -90,84 +88,10 @@ AWS_USE_PATH_STYLE_ENDPOINT=false
 VITE_APP_NAME="${APP_NAME}"
 EOF
 else
-  echo "📄 .env file already exists, overwriting with predefined environment variables..."
-
-  # Overwrite the existing .env file with the required values
-  cat <<EOF > /var/www/html/.env
-APP_NAME="${PROJECT_NAME}"
-APP_ENV=local
-APP_KEY=base64:jU6xg8sp9ia37ypFlTVk1CAFx6MmeXRukO1W987uUzI=
-APP_DEBUG=true
-APP_TIMEZONE='Asia/Jakarta'
-APP_URL="${DOMAIN}"
-ASSET_URL="${DOMAIN}"
-DEBUGBAR_ENABLED=false
-ASSET_PREFIX=
-# ASSET_PREFIX=/dev/kit/public example in case deployed inside a folder
-
-APP_LOCALE=en
-APP_FALLBACK_LOCALE=en
-APP_FAKER_LOCALE=en_US
-
-APP_MAINTENANCE_DRIVER=file
-# APP_MAINTENANCE_STORE=database
-
-PHP_CLI_SERVER_WORKERS=4
-
-BCRYPT_ROUNDS=12
-
-LOG_CHANNEL=stack
-LOG_STACK=single
-LOG_DEPRECATIONS_CHANNEL=null
-LOG_LEVEL=debug
-
-DB_CONNECTION=mariadb
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE="${PROJECT_NAME}"
-DB_USERNAME=root
-DB_PASSWORD=p455w0rd
-
-SESSION_DRIVER=database
-SESSION_LIFETIME=120
-SESSION_ENCRYPT=true
-SESSION_PATH=/
-SESSION_DOMAIN=null
-
-BROADCAST_CONNECTION=log
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=database
-
-CACHE_STORE=database
-# CACHE_PREFIX=
-
-MEMCACHED_HOST=127.0.0.1
-
-REDIS_CLIENT=phpredis
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
-MAIL_MAILER=log
-MAIL_SCHEME=null
-MAIL_HOST=127.0.0.1
-MAIL_PORT=2525
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_FROM_ADDRESS="hello@example.com"
-MAIL_FROM_NAME="${APP_NAME}"
-
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=
-AWS_USE_PATH_STYLE_ENDPOINT=false
-
-VITE_APP_NAME="${APP_NAME}"
-EOF
+  echo "✅ .env already exists. Skipping overwrite."
 fi
 
-# Step 3: Wait for DB connection (host should match DB_HOST in .env)
+# Step 3: Wait for DB connection
 DB_HOST=$(grep DB_HOST /var/www/html/.env | cut -d '=' -f2)
 DB_PORT=$(grep DB_PORT /var/www/html/.env | cut -d '=' -f2)
 
@@ -176,7 +100,6 @@ DB_PORT=${DB_PORT:-3306}
 
 echo "⏳ Waiting for database at $DB_HOST:$DB_PORT..."
 
-# Timeout after 30 attempts (1 minute)
 RETRIES=30
 until nc -z "$DB_HOST" "$DB_PORT"; do
   if [ "$RETRIES" -le 0 ]; then
@@ -197,9 +120,11 @@ if [ ! -d /var/www/html/vendor ]; then
 fi
 
 # Step 5: Generate app key if not already present
-if [ ! -f /var/www/html/storage/oauth-private.key ]; then
+if ! grep -q "^APP_KEY=base64:" /var/www/html/.env; then
   echo "🔐 Generating Laravel app key..."
   php artisan key:generate --force
+else
+  echo "✅ APP_KEY already exists. Skipping key generation."
 fi
 
 # Step 6: Create necessary folders and set permissions
@@ -208,13 +133,12 @@ mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Step 7: Run database migrations
+# Step 7: Run database migrations only
 echo "🗃️ Running migrations..."
 php artisan migrate --force
 
-# Step 8: Run custom project init command
-echo "🚀 Running project:init..."
-php artisan project:init || true
+# Step 8: DO NOT run project:init automatically on every start
+echo "⏭️ Skipping project:init on container startup"
 
 # Step 9: Create storage symbolic link
 echo "🔗 Creating storage link..."

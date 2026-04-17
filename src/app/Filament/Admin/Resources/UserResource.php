@@ -10,142 +10,109 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
-
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationLabel = 'Users';
+    protected static ?string $modelLabel = 'User';
+    protected static ?string $pluralModelLabel = 'Users';
     protected static ?string $navigationGroup = 'Administration';
+    protected static ?int $navigationSort = 1;
 
-    protected static ?string $recordTitleAttribute = 'name';
-
-    protected static ?int $navigationSort = -2;
-
-    public static function getNavigationBadge(): ?string
+    public static function shouldRegisterNavigation(): bool
     {
-        return static::getModel()::count();
+        return auth()->check() && auth()->user()->canManageUsers();
     }
 
-    public static function getGloballySearchableAttributes(): array
+    public static function canViewAny(): bool
     {
-        return ['name', 'email', 'roles.name'];
+        return auth()->check() && auth()->user()->canManageUsers();
     }
 
-    public static function getGlobalSearchResultDetails(Model $record): array
+    public static function canCreate(): bool
     {
-        return [
-            'Role' => $record->roles->pluck('name')->implode(', '),
-            'Email' => $record->email,
-        ];
+        return auth()->check() && auth()->user()->canManageUsers();
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->check() && auth()->user()->canManageUsers();
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->check()
+            && auth()->user()->canManageUsers()
+            && auth()->id() !== $record->id;
     }
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
+        return $form->schema([
+            Forms\Components\TextInput::make('name')
+                ->required()
+                ->maxLength(255),
 
-                Forms\Components\Grid::make(2)
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->minLength(2)
-                            ->maxLength(255)
-                            ->columnSpan('full')
-                            ->required(),
-                        Forms\Components\FileUpload::make('avatar_url')
-                            ->label('Avatar')
-                            ->image()
-                            ->optimize('webp')
-                            ->imageEditor()
-                            ->imagePreviewHeight('250')
-                            ->panelAspectRatio('7:2')
-                            ->panelLayout('integrated')
-                            ->columnSpan('full'),
-                        Forms\Components\TextInput::make('email')
-                            ->required()
-                            ->prefixIcon('heroicon-m-envelope')
-                            ->columnSpan('full')
-                            ->email(),
+            Forms\Components\TextInput::make('email')
+                ->email()
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->maxLength(255),
 
-                        Forms\Components\TextInput::make('password')
-                            ->password()
-                            ->confirmed()
-                            ->columnSpan(1)
-                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                            ->dehydrated(fn ($state) => filled($state))
-                            ->required(fn (string $context): bool => $context === 'create'),
-                        Forms\Components\TextInput::make('password_confirmation')
-                            ->required(fn (string $context): bool => $context === 'create')
-                            ->columnSpan(1)
-                            ->password(),
-                    ]),
+            Forms\Components\TextInput::make('password')
+                ->password()
+                ->revealable()
+                ->required(fn (string $operation): bool => $operation === 'create')
+                ->dehydrated(fn ($state) => filled($state))
+                ->maxLength(255)
+                ->helperText('Kosongkan saat edit jika password tidak diubah.'),
 
-                Forms\Components\Section::make('Roles')
-                    ->schema([
-                        Forms\Components\Select::make('roles')
-                            ->required()
-                            ->multiple()
-                            ->relationship('roles', 'name')
-                            ->label('Roles'),
-                    ])
-                    ->columns(1),
-
-            ]);
+            Forms\Components\Select::make('role_name')
+                ->label('Role')
+                ->options(fn () => Role::orderBy('name')->pluck('name', 'name')->toArray())
+                ->required()
+                ->searchable()
+                ->preload()
+                ->default(fn (?User $record) => $record?->roles->first()?->name),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('avatar_url')
-                    ->defaultImageUrl(url('https://www.gravatar.com/avatar/64e1b8d34f425d19e1ee2ea7236d3028?d=mp&r=g&s=250'))
-                    ->label('Avatar')
-                    ->circular(),
-                Tables\Columns\TextColumn::make('email')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('roles.name')
-                    ->badge()
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->date()
-                    ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
 
-            ])
-            ->filters([
-                //
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('Role')
+                    ->badge()
+                    ->separator(', '),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn (User $record) => auth()->id() !== $record->id),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    // Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
