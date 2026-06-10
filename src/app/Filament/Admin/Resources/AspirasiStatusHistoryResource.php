@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class AspirasiStatusHistoryResource extends Resource
@@ -54,11 +55,16 @@ class AspirasiStatusHistoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('id', 'desc')
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('No Riwayat')
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('aspirasi.judul')
                     ->label('Aspirasi')
                     ->searchable()
-                    ->sortable(),
+                    ->limit(40),
 
                 Tables\Columns\TextColumn::make('old_status')
                     ->label('Dari')
@@ -77,7 +83,7 @@ class AspirasiStatusHistoryResource extends Resource
 
                 Tables\Columns\TextColumn::make('catatan')
                     ->label('Catatan')
-                    ->limit(40),
+                    ->limit(50),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu')
@@ -96,6 +102,12 @@ class AspirasiStatusHistoryResource extends Resource
             ])
             ->actions([])
             ->bulkActions([]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->orderByDesc('id');
     }
 
     public static function getPages(): array

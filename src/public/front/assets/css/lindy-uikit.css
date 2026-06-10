@@ -1,0 +1,67 @@
+/*
+|--------------------------------------------------------------------------
+| Deprecated SIMALEX Legacy Slider
+|--------------------------------------------------------------------------
+| File ini sebelumnya berisi layout lama:
+| - html/body overflow hidden
+| - .simalex-slider 500vw
+| - .simalex-slide 100vh
+|
+| Sistem horizontal terbaru sudah dipindahkan ke:
+| public/front/assets/css/simalex/
+|--------------------------------------------------------------------------
+*/
+
+
+
+/* html,
+body {
+    overflow: hidden;
+}
+
+.simalex-slider {
+    display: flex;
+    width: 500vw;
+    height: 100vh;
+    transition: transform 0.75s ease-in-out;
+}
+
+.simalex-slide {
+    width: 100vw;
+    height: 100vh;
+    flex-shrink: 0;
+    overflow-y: auto;
+    scroll-margin-top: 90px;
+}
+
+.header .navbar-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.88);
+}
+
+.simalex-nav.active {
+    color: #2F80ED !important;
+    font-weight: 700;
+}
+
+.single-feature {
+    transition: all 0.3s ease;
+}
+
+.single-feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(47, 128, 237, 0.15);
+}
+
+.button {
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+} */

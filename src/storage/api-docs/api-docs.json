@@ -1,0 +1,90 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SIMALEX API Documentation",
+        "description": "Dokumentasi REST API SIMALEX untuk pengajuan aspirasi, tracking aspirasi, kategori aspirasi, dan statistik dashboard.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://magangdpr.test",
+            "description": "Local Development Server"
+        }
+    ],
+    "paths": {
+        "/api/v1/tracking/{ticket_number}": {
+            "get": {
+                "tags": [
+                    "Tracking"
+                ],
+                "summary": "Tracking aspirasi berdasarkan nomor tiket",
+                "description": "Endpoint untuk mengambil detail aspirasi berdasarkan nomor tiket.",
+                "operationId": "18d8e36dc45be1fb4fd80c59011f5c12",
+                "parameters": [
+                    {
+                        "name": "ticket_number",
+                        "in": "path",
+                        "description": "Nomor tiket aspirasi",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ASP-2026-0006"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data aspirasi berhasil ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "ticket_number": {
+                                                    "type": "string",
+                                                    "example": "ASP-2026-0006"
+                                                },
+                                                "judul": {
+                                                    "type": "string",
+                                                    "example": "Test API SIMALEX"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "Masuk"
+                                                },
+                                                "kategori": {
+                                                    "type": "string",
+                                                    "example": "Pidana"
+                                                },
+                                                "attachments_count": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nomor tiket tidak ditemukan"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Tracking",
+            "description": "Tracking"
+        }
+    ]
+}

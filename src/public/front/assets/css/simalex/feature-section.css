@@ -1,0 +1,201 @@
+/* =========================================================
+   SIMALEX FEATURE
+   Workflow and enterprise feature cards
+   ========================================================= */
+
+.simalex-feature-intro {
+    max-width: 560px;
+}
+
+.simalex-feature-flow {
+    display: grid;
+    gap: 14px;
+    margin-top: 34px;
+}
+
+.simalex-flow-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .88);
+    border: 1px solid rgba(47, 128, 237, .08);
+    color: #5f6885;
+    box-shadow: 0 14px 36px rgba(47, 128, 237, .06);
+    transition: all .28s ease;
+}
+
+.simalex-flow-item:hover {
+    transform: translateX(6px);
+    background: #ffffff;
+    box-shadow: 0 18px 45px rgba(47, 128, 237, .10);
+}
+
+.simalex-flow-item span {
+    width: 42px;
+    height: 42px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #edf5ff;
+    color: var(--simalex-primary);
+    font-weight: 900;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.simalex-flow-item strong {
+    display: block;
+    color: var(--simalex-dark);
+    font-weight: 900;
+    margin-bottom: 3px;
+    letter-spacing: -.01em;
+}
+
+.simalex-flow-item small {
+    display: block;
+    color: var(--simalex-muted);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.simalex-flow-item.active {
+    background: linear-gradient(135deg, var(--simalex-primary), var(--simalex-primary-dark));
+    color: #fff;
+    box-shadow: 0 20px 45px rgba(47, 128, 237, .22);
+}
+
+.simalex-flow-item.active span {
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+}
+
+.simalex-flow-item.active strong,
+.simalex-flow-item.active small {
+    color: #fff;
+}
+
+.simalex-feature-card {
+    height: 100%;
+}
+
+.single-feature.simalex-feature-card {
+    position: relative;
+    min-height: 286px;
+    padding: 38px 32px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .92);
+    border: 1px solid rgba(47, 128, 237, .07);
+    box-shadow: 0 22px 55px rgba(30, 45, 90, .075);
+    overflow: hidden;
+    transition: all .3s ease;
+}
+
+.single-feature.simalex-feature-card::before {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    right: -85px;
+    top: -85px;
+    border-radius: 50%;
+    background: rgba(47, 128, 237, .055);
+    transition: all .3s ease;
+}
+
+.single-feature.simalex-feature-card::after {
+    content: "";
+    position: absolute;
+    inset: auto 24px 0 24px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, rgba(47,128,237,.35), transparent);
+    opacity: 0;
+    transition: all .3s ease;
+}
+
+.single-feature.simalex-feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 28px 70px rgba(47, 128, 237, .13);
+    border-color: rgba(47, 128, 237, .14);
+}
+
+.single-feature.simalex-feature-card:hover::before {
+    transform: scale(1.25);
+    background: rgba(47, 128, 237, .085);
+}
+
+.single-feature.simalex-feature-card:hover::after {
+    opacity: 1;
+}
+
+.single-feature.simalex-feature-card .icon {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    border-radius: 24px;
+    background: #eaf3ff;
+    color: var(--simalex-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 26px;
+    box-shadow: none;
+    z-index: 2;
+    transition: all .3s ease;
+}
+
+.single-feature.simalex-feature-card:hover .icon {
+    background: linear-gradient(135deg, var(--simalex-primary), var(--simalex-primary-dark));
+    box-shadow: 0 16px 36px rgba(47, 128, 237, .22);
+}
+
+.single-feature.simalex-feature-card .icon i {
+    color: var(--simalex-primary);
+    font-size: 33px;
+    transition: all .3s ease;
+}
+
+.single-feature.simalex-feature-card:hover .icon i {
+    color: #fff;
+}
+
+.single-feature.simalex-feature-card .content {
+    position: relative;
+    z-index: 2;
+}
+
+.simalex-card-label {
+    display: inline-block;
+    color: var(--simalex-primary);
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+.simalex-feature-card h5 {
+    color: var(--simalex-dark);
+    font-weight: 900;
+    margin-bottom: 13px;
+    letter-spacing: -.02em;
+}
+
+.simalex-feature-card p {
+    color: var(--simalex-muted);
+    line-height: 1.75;
+    margin-bottom: 0;
+}
+
+@media (max-width: 991px) {
+    .simalex-feature-intro {
+        max-width: 100%;
+    }
+
+    .single-feature.simalex-feature-card {
+        min-height: auto;
+    }
+}

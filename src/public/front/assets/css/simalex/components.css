@@ -1,0 +1,134 @@
+/* =========================================================
+   SIMALEX COMPONENTS
+   Shared buttons, cards, badges, form elements, progress
+   ========================================================= */
+
+.simalex-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(47,128,237,.08);
+    color: var(--simalex-primary);
+    font-weight: 800;
+    margin-bottom: 28px;
+}
+
+.simalex-badge span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--simalex-primary);
+    box-shadow: 0 0 0 6px rgba(47,128,237,.10);
+}
+
+.simalex-section-title {
+    font-size: clamp(34px, 4vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -.04em;
+    font-weight: 800;
+    color: var(--simalex-dark);
+    margin-bottom: 22px;
+}
+
+.simalex-section-desc {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--simalex-muted);
+    margin-bottom: 34px;
+}
+
+.single-feature,
+.single-pricing,
+.contact-form-wrapper,
+.about-content-wrapper,
+.simalex-glass-card {
+    background: var(--simalex-surface);
+    border-radius: var(--simalex-radius-lg);
+    box-shadow: 0 25px 70px rgba(47, 128, 237, .12);
+    border: 1px solid var(--simalex-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.single-feature {
+    min-height: 230px;
+    padding: 42px 35px;
+    transition: all .3s ease;
+}
+
+.single-feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 80px rgba(47, 128, 237, .18);
+}
+
+.single-feature .icon {
+    width: 74px;
+    height: 74px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--simalex-primary), var(--simalex-accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    box-shadow: 0 16px 38px rgba(47,128,237,.18);
+}
+
+.single-feature .icon i {
+    color: #fff;
+    font-size: 34px;
+}
+
+.about-content-wrapper,
+.contact-form-wrapper,
+.single-pricing {
+    padding: 45px;
+}
+
+.button {
+    border-radius: 999px !important;
+    box-shadow: 0 14px 30px rgba(47, 128, 237, .25);
+}
+
+.progress {
+    height: 10px;
+    border-radius: 999px;
+    background: #edf3fc;
+}
+
+.progress-bar {
+    background: linear-gradient(135deg, var(--simalex-primary), var(--simalex-accent));
+    border-radius: 999px;
+}
+
+.simalex-form-label {
+    display: block;
+    color: var(--simalex-dark);
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.simalex-form-control {
+    width: 100%;
+    min-height: 56px;
+    border: 1px solid rgba(47,128,237,.16);
+    border-radius: 18px;
+    background: #f8fbff;
+    padding: 0 18px;
+    color: var(--simalex-dark);
+    font-weight: 600;
+    outline: none;
+    transition: var(--simalex-transition);
+}
+
+.simalex-form-control:focus {
+    border-color: var(--simalex-primary);
+    background: #fff;
+    box-shadow: 0 0 0 5px rgba(47,128,237,.10);
+}
+
+.simalex-textarea {
+    padding-top: 16px;
+    resize: none;
+}

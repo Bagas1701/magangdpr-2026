@@ -1,0 +1,150 @@
+/* =========================================================
+   SIMALEX RESPONSIVE
+   All responsive overrides in one place
+   ========================================================= */
+
+@media (max-width: 1199px) {
+    :root {
+        --simalex-navbar-height: 90px;
+    }
+
+    .simalex-hero-title {
+        font-size: 54px;
+    }
+}
+
+@media (max-width: 991px) {
+    body.simalex-home {
+        overflow-y: auto;
+    }
+
+    .header .navbar-area {
+        background: rgba(255,255,255,.96);
+    }
+
+    .navbar-collapse {
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 24px;
+        background: #fff;
+        border: 1px solid var(--simalex-border);
+        box-shadow: 0 20px 60px rgba(47,128,237,.12);
+    }
+
+    .simalex-nav {
+        width: 100%;
+        justify-content: flex-start;
+        margin: 3px 0;
+    }
+
+    .simalex-shell {
+        position: static;
+        margin-top: 90px;
+        min-height: 100vh;
+        overflow: visible;
+    }
+
+    .simalex-track {
+        display: block;
+        height: auto;
+        transform: none !important;
+    }
+
+    .simalex-panel {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        flex: none;
+        overflow: visible;
+        padding: 48px 0;
+    }
+
+    .simalex-panel .container {
+        min-height: auto;
+        display: block;
+    }
+
+    .simalex-hero-title {
+        font-size: 44px;
+    }
+
+    .simalex-dashboard-body {
+        grid-template-columns: 1fr;
+    }
+
+    .simalex-floating-card {
+        display: none;
+    }
+
+    .simalex-feature-intro,
+    .simalex-contact-intro {
+        max-width: 100%;
+    }
+
+    .simalex-about-floating-card {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        margin-top: 20px;
+    }
+
+    .simalex-contact-card {
+        padding: 26px;
+    }
+
+    .simalex-tracking-page {
+        padding: 120px 0 60px;
+    }
+
+    .simalex-tracking-hero,
+    .simalex-result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .simalex-tracking-search {
+        flex-direction: column;
+    }
+
+    .simalex-result-header {
+        flex-direction: column;
+    }
+
+    .simalex-result-card {
+        padding: 26px;
+    }
+
+    .footer {
+        position: static;
+    }
+}
+
+@media (max-width: 575px) {
+    .simalex-hero-title {
+        font-size: 38px;
+    }
+
+    .simalex-section-title {
+        font-size: 34px;
+    }
+
+    .simalex-mini-stats {
+        gap: 16px;
+    }
+
+    .simalex-mini-stat {
+        min-width: calc(50% - 16px);
+    }
+
+    .simalex-tracking-card,
+    .simalex-contact-card,
+    .simalex-about-main-card {
+        padding: 24px;
+        border-radius: 26px;
+    }
+
+    .simalex-ticket-card,
+    .simalex-tracking-example {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -14,6 +14,12 @@ class ListAspirasis extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+
+            Actions\Action::make('export_excel')
+                ->label('Export Excel')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->url(route('admin.aspirasi.export.excel'))
+                ->openUrlInNewTab(),
         ];
     }
 }

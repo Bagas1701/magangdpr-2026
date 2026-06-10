@@ -14,6 +14,8 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -30,15 +32,37 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->spa()
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->passwordReset()
+            ->brandName('SIMALEX')
             ->profile(\App\Filament\Pages\Auth\EditProfile::class, isSimple: false)
             ->defaultThemeMode(ThemeMode::Light)
             ->font('Montserrat')
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Amber,
             ])
+            ->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
+                fn () => Blade::render('
+                    <div class="mb-4">
+                        <a href="/" class="text-sm font-semibold text-amber-600 hover:text-amber-700">
+                            ← Kembali ke Beranda
+                        </a>
+                    </div>
+                ')
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+                fn () => Blade::render('
+                    <div class="mt-6 text-center text-xs text-gray-500">
+                        <p>Akses terbatas untuk staf, tenaga ahli, dan anggota dewan.</p>
+                        <p class="mt-1 font-semibold">SIMALEX v1.0</p>
+                    </div>
+                ')
+            )
             ->maxContentWidth(MaxWidth::SevenExtraLarge)
             ->sidebarCollapsibleOnDesktop()
             ->discoverResources(
@@ -82,7 +106,7 @@ class AdminPanelProvider extends PanelProvider
                     ->formPanelPosition('right')
                     ->formPanelWidth('40%')
                     ->emptyPanelBackgroundImageOpacity('70%')
-                    ->emptyPanelBackgroundImageUrl('https://picsum.photos/seed/picsum/1260/750.webp/?blur=1'),
+                    ->emptyPanelBackgroundImageUrl('https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bG9naW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60'),
                 \Awcodes\LightSwitch\LightSwitchPlugin::make()
                     ->position(\Awcodes\LightSwitch\Enums\Alignment::BottomCenter)
                     ->enabledOn([

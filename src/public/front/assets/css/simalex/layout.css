@@ -1,0 +1,87 @@
+/* =========================================================
+   SIMALEX LAYOUT
+   Horizontal panel shell system
+   ========================================================= */
+
+.simalex-shell {
+    position: fixed;
+    top: var(--simalex-header-height);
+    left: 0;
+    right: 0;
+    bottom: var(--simalex-footer-height);
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top left, rgba(47, 128, 237, .12), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(111, 168, 255, .10), transparent 24%),
+        linear-gradient(135deg, #eef5ff 0%, #f8fbff 48%, #ffffff 100%);
+}
+
+.simalex-track {
+    height: 100%;
+    display: flex;
+    transition: transform .9s cubic-bezier(.77, 0, .175, 1);
+    will-change: transform;
+}
+
+.simalex-panel {
+    position: relative;
+    width: 100vw;
+    height: 100%;
+    flex: 0 0 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 58px 0 82px;
+}
+
+.simalex-panel::before {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: rgba(47, 128, 237, .045);
+    filter: blur(22px);
+    top: -120px;
+    right: -120px;
+    pointer-events: none;
+}
+
+.simalex-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.simalex-panel::-webkit-scrollbar-thumb {
+    background: rgba(47, 128, 237, .22);
+    border-radius: 999px;
+}
+
+.simalex-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.simalex-panel .container {
+    position: relative;
+    z-index: 2;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.simalex-panel .row {
+    width: 100%;
+}
+
+/* Tracking result page remains normal vertical page */
+.simalex-tracking-page {
+    min-height: calc(100vh - var(--simalex-footer-height));
+    padding: 140px 0 80px;
+    background:
+        radial-gradient(circle at top left, rgba(47, 128, 237, .14), transparent 30%),
+        linear-gradient(135deg, #eef6ff 0%, #ffffff 100%);
+}
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1440px;
+    }
+}

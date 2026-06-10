@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\PermissionRegistrar;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+
         $users = [
             [
                 'name' => 'Super Admin',
@@ -22,9 +25,9 @@ class UserSeeder extends Seeder
                 'role' => 'admin',
             ],
             [
-                'name' => 'Anggota',
+                'name' => 'Anggota Dewan',
                 'email' => 'anggota@magangdpr.test',
-                'role' => 'anggota',
+                'role' => 'anggota_dewan',
             ],
             [
                 'name' => 'Tenaga Ahli',
@@ -49,5 +52,7 @@ class UserSeeder extends Seeder
 
             $user->syncRoles([$userData['role']]);
         }
+
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 }

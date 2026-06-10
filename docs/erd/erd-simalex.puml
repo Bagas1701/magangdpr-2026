@@ -1,0 +1,116 @@
+@startuml
+left to right direction
+skinparam linetype ortho
+
+' ================= USERS & ROLES =================
+entity "users" as users {
+  +id : bigint <<PK>>
+  name : varchar
+  email : varchar <<UQ>>
+  password : varchar
+  role_id : bigint <<FK>>
+  is_active : boolean
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "roles" as roles {
+  +id : bigint <<PK>>
+  name : varchar <<UQ>>
+  code : varchar <<UQ>>
+  description : text
+}
+
+entity "permissions" as permissions {
+  +id : bigint <<PK>>
+  name : varchar <<UQ>>
+  code : varchar <<UQ>>
+}
+
+entity "role_permissions" as rp {
+  +id : bigint <<PK>>
+  role_id : bigint <<FK>>
+  permission_id : bigint <<FK>>
+}
+
+' ================= KONSTITUEN =================
+entity "konstituens" as konstituens {
+  +id : bigint <<PK>>
+  nik : varchar <<UQ>>
+  nama : varchar
+  jenis_kelamin : enum
+  no_telepon : varchar
+  alamat : text
+}
+
+' ================= MASTER =================
+entity "kategori_aspirasis" as kategori {
+  +id : bigint <<PK>>
+  nama : varchar <<UQ>>
+  deskripsi : text
+}
+
+entity "status_aspirasis" as status {
+  +id : bigint <<PK>>
+  nama : varchar <<UQ>>
+  urutan : int
+  is_active : boolean
+}
+
+' ================= ASPIRASI =================
+entity "aspirasis" as aspirasis {
+  +id : bigint <<PK>>
+  konstituen_id : bigint <<FK>>
+  kategori_id : bigint <<FK>>
+  status_id : bigint <<FK>>
+  created_by : bigint <<FK>>
+  judul : varchar
+  deskripsi : text
+  tanggal_kejadian : date
+  lokasi_kejadian : varchar
+  prioritas : enum
+}
+
+' ================= CHILD =================
+entity "attachments" as attachments {
+  +id : bigint <<PK>>
+  aspirasi_id : bigint <<FK>>
+  nama_file : varchar
+  file_path : varchar
+  file_type : varchar
+  file_size : bigint
+}
+
+entity "aspirasi_status_histories" as histories {
+  +id : bigint <<PK>>
+  aspirasi_id : bigint <<FK>>
+  status_id : bigint <<FK>>
+  user_id : bigint <<FK>>
+  catatan : text
+}
+
+entity "aspirasi_notes" as notes {
+  +id : bigint <<PK>>
+  aspirasi_id : bigint <<FK>>
+  user_id : bigint <<FK>>
+  catatan : text
+}
+
+' ================= RELATIONS =================
+users }o--|| roles
+roles ||--o{ rp
+permissions ||--o{ rp
+
+konstituens ||--o{ aspirasis
+kategori ||--o{ aspirasis
+status ||--o{ aspirasis
+users ||--o{ aspirasis : created_by
+
+aspirasis ||--o{ attachments
+aspirasis ||--o{ histories
+aspirasis ||--o{ notes
+
+users ||--o{ histories
+users ||--o{ notes
+
+@enduml

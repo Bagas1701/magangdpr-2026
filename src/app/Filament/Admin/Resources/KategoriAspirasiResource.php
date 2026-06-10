@@ -33,6 +33,11 @@ class KategoriAspirasiResource extends Resource
         return auth()->check() && auth()->user()->canManageMasterData();
     }
 
+    public static function canView(Model $record): bool
+    {
+        return auth()->check() && auth()->user()->canManageMasterData();
+    }
+
     public static function canCreate(): bool
     {
         return auth()->check() && auth()->user()->canManageMasterData();
@@ -85,7 +90,9 @@ class KategoriAspirasiResource extends Resource
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->url(fn (KategoriAspirasi $record) => self::getUrl('view', ['record' => $record]))
+                    ->openUrlInNewTab(false),
 
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Slug')
@@ -106,6 +113,9 @@ class KategoriAspirasiResource extends Resource
                     ->label('Status Aktif'),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->label('Lihat')
+                    ->icon('heroicon-o-eye'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -126,6 +136,7 @@ class KategoriAspirasiResource extends Resource
         return [
             'index' => Pages\ListKategoriAspirasis::route('/'),
             'create' => Pages\CreateKategoriAspirasi::route('/create'),
+            'view' => Pages\ViewKategoriAspirasi::route('/{record}'),
             'edit' => Pages\EditKategoriAspirasi::route('/{record}/edit'),
         ];
     }

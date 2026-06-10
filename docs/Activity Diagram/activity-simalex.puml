@@ -1,0 +1,58 @@
+@startuml
+title ACTIVITY DIAGRAM SIMALEX\n(Alur Masuk → Selesai)
+
+|Konstituen / Masyarakat|
+start
+:Mengajukan Aspirasi\n(melalui form/kanal resmi);
+
+|Staf|
+:Login ke Sistem;
+:Input Data Aspirasi\ndan Data Konstituen;
+:Upload Dokumen\nPendukung (jika ada);
+:Simpan & Kirim\nAspirasi;
+
+|Tenaga Ahli|
+:Login ke Sistem;
+:Lihat Detail Aspirasi\ndan Dokumen;
+:Analisis Aspirasi;
+:Beri Kajian /\nRekomendasi;
+:Ubah Status ke\n"Tahap Analisis Selesai"\n/ "Siap Tindak Lanjut";
+
+|Staf|
+if (Apakah Aspirasi\nSelesai?) then (Ya)
+  :Update Status Aspirasi\n(Sesuai Hasil Kajian /\nKeputusan);
+else (Tidak)
+  :Sampaikan Hasil\nPenanganan ke Konstituen;
+endif
+
+|Anggota Dewan|
+:Login ke Sistem;
+:Lihat Dashboard\n& Statistik Aspirasi;
+:Lihat Detail Aspirasi\ndan Hasil Kajian;
+:Memberikan Arahan /\nKeputusan;
+
+if (Perlu Tindak\nLanjut?) then (Ya)
+  |Staf|
+  :Update Status Aspirasi\n(Sesuai Hasil Kajian /\nKeputusan);
+  :Sampaikan Hasil\nPenanganan ke Konstituen;
+else (Tidak)
+  |Anggota Dewan|
+  :Selesai /\nDitetapkan Selesai;
+endif
+
+|Staf|
+:Menindaklanjuti Hasil\nKeputusan;
+
+|Konstituen / Masyarakat|
+:Menerima Informasi\nHasil Penanganan;
+stop
+
+|Admin|
+:Login ke Sistem;
+:Kelola Pengguna\n(User);
+:Kelola Role & Hak\nAkses;
+:Kelola Master Data\n(Kategori, dll);
+:Monitoring Sistem\ndan Laporan;
+:Backup & Keamanan\nSistem;
+
+@enduml

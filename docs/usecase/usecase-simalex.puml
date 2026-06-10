@@ -1,0 +1,133 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title USE CASE DIAGRAM\nSIMALEX – SISTEM MANAJEMEN ASPIRASI & ADMINISTRASI KEDEWANAN
+
+actor Admin as admin
+actor Staf as staf
+actor "Tenaga Ahli" as tenaga
+actor "Anggota Dewan" as anggota
+
+rectangle "SIMALEX\n(Sistem Manajemen Aspirasi & Administrasi Kedewanan)" as system {
+
+  usecase "Login" as UC_Login
+  usecase "Logout" as UC_Logout
+  usecase "Lihat Dashboard" as UC_Dashboard
+  usecase "Lihat Statistik\nAspirasi" as UC_Statistik
+
+  package "Admin" {
+    usecase "Kelola User" as UC_KelolaUser
+    usecase "Kelola Role\ndan Permission" as UC_KelolaRole
+    usecase "Kelola Data\nKonstituen" as UC_KelolaKonstituen
+    usecase "Kelola Kategori\nAspirasi" as UC_KelolaKategori
+    usecase "Kelola Aspirasi\n(CRUD)" as UC_KelolaAspirasi
+    usecase "Kelola Lampiran\nAspirasi" as UC_KelolaLampiran
+    usecase "Lihat Riwayat\nStatus" as UC_AdminRiwayat
+  }
+
+  package "Staf" {
+    usecase "Tambah Data\nKonstituen" as UC_TambahKonstituen
+    usecase "Edit Data\nKonstituen" as UC_EditKonstituen
+    usecase "Tambah Data\nAspirasi" as UC_TambahAspirasi
+    usecase "Upload Lampiran\nAspirasi" as UC_UploadLampiran
+    usecase "Ubah Status\nAspirasi" as UC_StafUbahStatus
+    usecase "Lihat Daftar\nAspirasi" as UC_StafDaftarAspirasi
+  }
+
+  package "Tenaga Ahli" {
+    usecase "Lihat Data\nAspirasi" as UC_TADataAspirasi
+    usecase "Lihat Detail\nAspirasi" as UC_TADetailAspirasi
+    usecase "Lihat Lampiran\nAspirasi" as UC_TALampiran
+    usecase "Beri Kajian /\nCatatan Aspirasi" as UC_TAKajian
+    usecase "Ubah Status\nAspirasi" as UC_TAUbahStatus
+    usecase "Lihat Riwayat\nStatus" as UC_TARiwayat
+    usecase "Lihat Dashboard\nAnalisis" as UC_TADashboard
+  }
+
+  package "Anggota Dewan" {
+    usecase "Lihat Dashboard\nUtama" as UC_ADDashboard
+    usecase "Lihat Data\nAspirasi" as UC_ADDataAspirasi
+    usecase "Lihat Detail\nAspirasi" as UC_ADDetailAspirasi
+    usecase "Lihat Hasil Kajian /\nRekomendasi" as UC_ADKajian
+    usecase "Lihat Statistik\nAspirasi" as UC_ADStatistik
+    usecase "Pantau Status\nPenanganan" as UC_ADPantau
+  }
+}
+
+admin --> UC_KelolaUser
+admin --> UC_KelolaRole
+admin --> UC_KelolaKonstituen
+admin --> UC_KelolaKategori
+admin --> UC_KelolaAspirasi
+admin --> UC_KelolaLampiran
+admin --> UC_AdminRiwayat
+admin --> UC_Dashboard
+
+staf --> UC_TambahKonstituen
+staf --> UC_EditKonstituen
+staf --> UC_TambahAspirasi
+staf --> UC_UploadLampiran
+staf --> UC_StafUbahStatus
+staf --> UC_StafDaftarAspirasi
+staf --> UC_Dashboard
+
+tenaga --> UC_TADataAspirasi
+tenaga --> UC_TADetailAspirasi
+tenaga --> UC_TALampiran
+tenaga --> UC_TAKajian
+tenaga --> UC_TAUbahStatus
+tenaga --> UC_TARiwayat
+tenaga --> UC_TADashboard
+
+anggota --> UC_ADDashboard
+anggota --> UC_ADDataAspirasi
+anggota --> UC_ADDetailAspirasi
+anggota --> UC_ADKajian
+anggota --> UC_ADStatistik
+anggota --> UC_ADPantau
+
+UC_KelolaUser ..> UC_Login : <<include>>
+UC_KelolaAspirasi ..> UC_Login : <<include>>
+UC_TambahAspirasi ..> UC_Login : <<include>>
+UC_TADataAspirasi ..> UC_Login : <<include>>
+UC_TAUbahStatus ..> UC_Login : <<include>>
+UC_ADDataAspirasi ..> UC_Login : <<include>>
+
+UC_Login --> UC_Dashboard
+UC_Dashboard --> UC_Statistik
+UC_Statistik --> UC_Logout
+
+note left of admin
+Mengelola seluruh sistem,
+data master, dan
+hak akses pengguna
+end note
+
+note left of staf
+Melakukan input data
+dan pembaruan proses
+aspirasi
+end note
+
+note right of tenaga
+Menganalisis aspirasi dan
+memberikan kajian atau
+rekomendasi
+end note
+
+note right of anggota
+Memantau data aspirasi
+dan hasil penanganannya
+sebagai bahan pengambilan
+keputusan
+end note
+
+legend bottom
+|= Keterangan |= Simbol |
+| Asosiasi | Garis aktor ke use case |
+| Include | Garis putus-putus <<include>> |
+endlegend
+
+@enduml

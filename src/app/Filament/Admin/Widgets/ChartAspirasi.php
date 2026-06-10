@@ -7,24 +7,56 @@ use Filament\Widgets\ChartWidget;
 
 class ChartAspirasi extends ChartWidget
 {
-    protected static ?string $heading = 'Statistik Aspirasi per Kategori';
+    protected static ?string $heading = 'Monitoring Status Aspirasi';
+
+    protected static ?int $sort = 2;
+
+    protected int|string|array $columnSpan = 'full';
 
     protected function getData(): array
     {
+        $labels = [
+            Aspirasi::STATUS_MASUK,
+            Aspirasi::STATUS_VERIFIKASI,
+            Aspirasi::STATUS_TINDAK_LANJUT,
+            Aspirasi::STATUS_MENUNGGU_PERSETUJUAN,
+            Aspirasi::STATUS_SELESAI,
+            Aspirasi::STATUS_DITOLAK,
+        ];
+
+        $data = collect($labels)
+            ->map(fn (string $status): int => Aspirasi::whereHas(
+                'status',
+                fn ($query) => $query->where('nama', $status)
+            )->count())
+            ->toArray();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Jumlah Aspirasi',
-                    'data' => [
-                        Aspirasi::whereHas('kategoriAspirasi', fn ($query) => $query->where('nama', 'Pidana'))->count(),
-                        Aspirasi::whereHas('kategoriAspirasi', fn ($query) => $query->where('nama', 'Perdata'))->count(),
-                        Aspirasi::whereHas('kategoriAspirasi', fn ($query) => $query->where('nama', 'HAM'))->count(),
-                        Aspirasi::whereHas('kategoriAspirasi', fn ($query) => $query->where('nama', 'Agraria'))->count(),
-                        Aspirasi::whereHas('kategoriAspirasi', fn ($query) => $query->where('nama', 'Lainnya'))->count(),
+                    'data' => $data,
+                    'backgroundColor' => [
+                        '#94a3b8',
+                        '#38bdf8',
+                        '#f59e0b',
+                        '#6366f1',
+                        '#22c55e',
+                        '#ef4444',
                     ],
+                    'borderColor' => [
+                        '#64748b',
+                        '#0284c7',
+                        '#d97706',
+                        '#4f46e5',
+                        '#16a34a',
+                        '#dc2626',
+                    ],
+                    'borderWidth' => 1,
+                    'borderRadius' => 8,
                 ],
             ],
-            'labels' => ['Pidana', 'Perdata', 'HAM', 'Agraria', 'Lainnya'],
+            'labels' => $labels,
         ];
     }
 

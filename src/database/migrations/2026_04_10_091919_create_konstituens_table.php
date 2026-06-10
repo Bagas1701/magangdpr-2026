@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('nama');
             $table->string('kontak')->nullable();
             $table->text('alamat')->nullable();
-            $table->string('wilayah')->nullable();
+            $table->string('kabupaten_kota')->nullable();
+            $table->string('kecamatan')->nullable();
+            $table->string('kelurahan')->nullable();
+            $table->string('foto_ktp')->nullable();
             $table->timestamps();
      });
     }

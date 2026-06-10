@@ -1,0 +1,29 @@
+/* =========================================================
+   SIMALEX UTILITIES
+   Small reusable helpers
+   ========================================================= */
+
+.simalex-text-gradient {
+    background: linear-gradient(135deg, var(--simalex-primary), var(--simalex-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.simalex-shadow-soft {
+    box-shadow: var(--simalex-shadow-soft);
+}
+
+.simalex-shadow-card {
+    box-shadow: var(--simalex-shadow-card);
+}
+
+.simalex-glass {
+    background: rgba(255,255,255,.78);
+    border: 1px solid var(--simalex-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.simalex-rounded-xl {
+    border-radius: var(--simalex-radius-xl);
+}

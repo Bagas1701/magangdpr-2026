@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Konstituen extends Model
 {
@@ -11,12 +13,30 @@ class Konstituen extends Model
         'nama',
         'kontak',
         'alamat',
-        'wilayah',
+        'kabupaten_kota',
+        'kecamatan',
+        'kelurahan',
+        'foto_ktp',
     ];
-    // Relasi dengan Aspirasi
-    public function aspirasis()
+
+    public function aspirasis(): HasMany
     {
         return $this->hasMany(Aspirasi::class);
     }
-}
 
+    public function latestAspirasi(): HasOne
+    {
+        return $this->hasOne(Aspirasi::class)->latestOfMany();
+    }
+
+    public function getBadgeStatusAttribute(): string
+    {
+        $total = $this->aspirasis_count ?? $this->aspirasis()->count();
+
+        return match (true) {
+            $total === 0 => 'Belum Ada Aspirasi',
+            $total <= 2 => 'Aktif',
+            default => 'Sering Melapor',
+        };
+    }
+}

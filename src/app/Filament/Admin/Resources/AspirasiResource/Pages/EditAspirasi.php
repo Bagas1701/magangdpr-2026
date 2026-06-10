@@ -3,154 +3,388 @@
 namespace App\Filament\Admin\Resources\AspirasiResource\Pages;
 
 use App\Filament\Admin\Resources\AspirasiResource;
-use App\Models\AspirasiStatusHistory;
+use App\Models\Aspirasi;
+use App\Models\AspirasiNote;
+use App\Models\Attachment;
+use App\Models\User;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Validation\ValidationException;
 
 class EditAspirasi extends EditRecord
 {
     protected static string $resource = AspirasiResource::class;
 
+    protected ?string $newKajianNote = null;
+
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('mulaiVerifikasi')
+                ->label('Mulai Verifikasi')
+                ->icon('heroicon-o-check-circle')
+                ->color('info')
+                ->visible(fn (): bool => $this->record->isMasuk() && $this->canProcessByStaff())
+                ->requiresConfirmation()
+                ->modalHeading('Mulai Verifikasi Aspirasi')
+                ->modalDescription('Status aspirasi akan berubah dari Masuk menjadi Verifikasi.')
+                ->action(function (): void {
+                    $this->changeStatus(
+                        Aspirasi::STATUS_VERIFIKASI,
+                        'Aspirasi mulai diverifikasi oleh staf.'
+                    );
+                }),
+
+            Actions\Action::make('verifikasiLanjutkan')
+                ->label('Verifikasi & Lanjutkan')
+                ->icon('heroicon-o-arrow-right-circle')
+                ->color('warning')
+                ->visible(fn (): bool => $this->record->isVerifikasi() && $this->canProcessByStaff())
+                ->requiresConfirmation()
+                ->modalHeading('Lanjut ke Tindak Lanjut')
+                ->modalDescription('Status aspirasi akan berubah menjadi Tindak Lanjut dan file tahap awal akan dikunci.')
+                ->action(function (): void {
+                    if (! $this->hasInitialAttachment()) {
+                        Notification::make()
+                            ->danger()
+                            ->title('Lampiran awal belum tersedia')
+                            ->body('Minimal harus ada satu lampiran tahap awal sebelum lanjut ke Tindak Lanjut.')
+                            ->send();
+
+                        return;
+                    }
+
+                    $this->lockInitialAttachments();
+
+                    $this->changeStatus(
+                        Aspirasi::STATUS_TINDAK_LANJUT,
+                        'Verifikasi selesai. File awal dikunci dan aspirasi masuk tahap tindak lanjut.'
+                    );
+                }),
+
+            Actions\Action::make('ajukanPersetujuan')
+                ->label('Ajukan Persetujuan')
+                ->icon('heroicon-o-paper-airplane')
+                ->color('primary')
+                ->visible(fn (): bool => $this->record->isTindakLanjut() && $this->canProcessByStaff())
+                ->requiresConfirmation()
+                ->modalHeading('Ajukan ke Anggota Dewan')
+                ->modalDescription('Status aspirasi akan berubah menjadi Menunggu Persetujuan.')
+                ->action(function (): void {
+                    $this->notifyRoles(
+                        ['admin', 'super_admin', 'anggota_dewan'],
+                        'Aspirasi menunggu persetujuan',
+                        'Aspirasi telah diajukan untuk persetujuan: ' . $this->record->judul
+                    );
+
+                    $this->changeStatus(
+                        Aspirasi::STATUS_MENUNGGU_PERSETUJUAN,
+                        'Proses tindak lanjut selesai dan diajukan kepada Anggota Dewan.'
+                    );
+                }),
+
+            Actions\Action::make('approve')
+                ->label('Approve & Selesaikan')
+                ->icon('heroicon-o-check-badge')
+                ->color('success')
+                ->visible(fn (): bool => $this->record->isMenungguPersetujuan() && $this->canApprove())
+                ->form([
+                    TextInput::make('nomor_disposisi')
+                        ->label('Nomor Disposisi')
+                        ->placeholder('Contoh: DISP/KOMIII/2026/001')
+                        ->maxLength(255),
+
+                    Select::make('jenis_keputusan')
+                        ->label('Jenis Keputusan')
+                        ->options([
+                            'disetujui_selesai' => 'Disetujui & Selesai',
+                            'disetujui_arsip' => 'Disetujui untuk Arsip',
+                        ])
+                        ->default('disetujui_selesai')
+                        ->required(),
+                ])
+                ->modalHeading('Setujui dan Selesaikan Aspirasi')
+                ->modalDescription('Aspirasi akan ditandai selesai dan menjadi read-only secara workflow.')
+                ->action(function (array $data): void {
+                    $this->record->update([
+                        'approval_status' => 'approved',
+                        'approval_note' => null,
+                        'nomor_disposisi' => $data['nomor_disposisi'] ?? null,
+                        'jenis_keputusan' => $data['jenis_keputusan'],
+                        'approved_by' => auth()->id(),
+                        'approved_at' => now(),
+                    ]);
+
+                    $this->lockAllAttachments();
+
+                    $this->notifyRoles(
+                        ['admin', 'super_admin', 'staf', 'tenaga_ahli'],
+                        'Aspirasi disetujui',
+                        'Aspirasi telah disetujui dan dinyatakan selesai: ' . $this->record->judul
+                    );
+
+                    $this->changeStatus(
+                        Aspirasi::STATUS_SELESAI,
+                        'Aspirasi disetujui oleh Anggota Dewan dan dinyatakan selesai.'
+                    );
+                }),
+
+            Actions\Action::make('requestRevision')
+                ->label('Minta Revisi')
+                ->icon('heroicon-o-arrow-uturn-left')
+                ->color('warning')
+                ->visible(fn (): bool => $this->record->isMenungguPersetujuan() && $this->canApprove())
+                ->form([
+                    TextInput::make('nomor_disposisi')
+                        ->label('Nomor Disposisi')
+                        ->placeholder('Contoh: DISP/KOMIII/2026/001')
+                        ->maxLength(255),
+
+                    Select::make('jenis_keputusan')
+                        ->label('Jenis Keputusan')
+                        ->options([
+                            'revisi_data' => 'Revisi Data',
+                            'revisi_dokumen' => 'Revisi Dokumen',
+                            'revisi_tindak_lanjut' => 'Revisi Tindak Lanjut',
+                        ])
+                        ->default('revisi_tindak_lanjut')
+                        ->required(),
+
+                    Textarea::make('approval_note')
+                        ->label('Catatan Revisi')
+                        ->required()
+                        ->rows(4),
+                ])
+                ->modalHeading('Minta Revisi Tindak Lanjut')
+                ->modalDescription('Aspirasi akan dikembalikan ke tahap Tindak Lanjut untuk diperbaiki staf atau tenaga ahli.')
+                ->action(function (array $data): void {
+                    $this->record->update([
+                        'approval_status' => 'revision',
+                        'approval_note' => $data['approval_note'],
+                        'nomor_disposisi' => $data['nomor_disposisi'] ?? null,
+                        'jenis_keputusan' => $data['jenis_keputusan'],
+                        'approved_by' => auth()->id(),
+                        'approved_at' => now(),
+                    ]);
+
+                    $this->record->attachments()
+                        ->where('stage', Attachment::STAGE_TINDAK_LANJUT)
+                        ->update([
+                            'is_locked' => false,
+                        ]);
+
+                    $this->record->changeStatus(
+                        Aspirasi::STATUS_TINDAK_LANJUT,
+                        'Anggota Dewan meminta revisi. Catatan: ' . $data['approval_note']
+                    );
+
+                    $this->notifyRoles(
+                        ['admin', 'super_admin', 'staf', 'tenaga_ahli'],
+                        'Aspirasi perlu revisi',
+                        'Anggota Dewan meminta revisi pada aspirasi: ' . $this->record->judul
+                    );
+
+                    Notification::make()
+                        ->success()
+                        ->title('Revisi berhasil diajukan')
+                        ->body('Aspirasi dikembalikan ke tahap Tindak Lanjut untuk diperbaiki staf atau tenaga ahli.')
+                        ->send();
+
+                    $this->redirect($this->getResource()::getUrl('index'));
+                }),
+
+            Actions\Action::make('reject')
+                ->label('Reject')
+                ->icon('heroicon-o-x-circle')
+                ->color('danger')
+                ->visible(fn (): bool => $this->record->isMenungguPersetujuan() && $this->canApprove())
+                ->form([
+                    TextInput::make('nomor_disposisi')
+                        ->label('Nomor Disposisi')
+                        ->placeholder('Contoh: DISP/KOMIII/2026/001')
+                        ->maxLength(255),
+
+                    Select::make('jenis_keputusan')
+                        ->label('Jenis Keputusan')
+                        ->options([
+                            'ditolak_data_tidak_valid' => 'Ditolak - Data Tidak Valid',
+                            'ditolak_bukan_kewenangan' => 'Ditolak - Bukan Kewenangan',
+                            'ditolak_bukti_tidak_cukup' => 'Ditolak - Bukti Tidak Cukup',
+                            'ditolak_duplikasi' => 'Ditolak - Duplikasi Aspirasi',
+                        ])
+                        ->default('ditolak_data_tidak_valid')
+                        ->required(),
+
+                    Textarea::make('approval_note')
+                        ->label('Alasan Penolakan')
+                        ->required()
+                        ->rows(4),
+                ])
+                ->modalHeading('Tolak Aspirasi')
+                ->modalDescription('Aspirasi akan ditolak dan dikunci sebagai status final.')
+                ->action(function (array $data): void {
+                    $this->record->update([
+                        'approval_status' => 'rejected',
+                        'approval_note' => $data['approval_note'],
+                        'nomor_disposisi' => $data['nomor_disposisi'] ?? null,
+                        'jenis_keputusan' => $data['jenis_keputusan'],
+                        'approved_by' => auth()->id(),
+                        'approved_at' => now(),
+                    ]);
+
+                    $this->lockAllAttachments();
+
+                    $this->notifyRoles(
+                        ['admin', 'super_admin', 'staf', 'tenaga_ahli'],
+                        'Aspirasi ditolak',
+                        'Aspirasi ditolak oleh Anggota Dewan: ' . $this->record->judul
+                    );
+
+                    $this->changeStatus(
+                        Aspirasi::STATUS_DITOLAK,
+                        'Aspirasi ditolak oleh Anggota Dewan. Alasan: ' . $data['approval_note']
+                    );
+                }),
+
             Actions\DeleteAction::make()
-                ->visible(fn () => auth()->user()?->isAdminLevel()),
+                ->visible(fn (): bool => auth()->user()?->hasAnyRole([
+                    'admin',
+                    'super_admin',
+                ]) ?? false),
         ];
     }
 
-    protected function handleRecordUpdate(Model $record, array $data): Model
+    protected function mutateFormDataBeforeSave(array $data): array
     {
-        $user = auth()->user();
+        $this->newKajianNote = trim($data['new_kajian_note'] ?? '');
 
-        $oldStatus = $record->status;
-        $newStatus = $data['status'] ?? $oldStatus;
-        $statusChangeNote = trim($data['status_change_note'] ?? '');
-        unset($data['status_change_note']);
+        unset(
+            $data['attachment_file'],
+            $data['new_kajian_note'],
+            $data['status_change_note']
+        );
 
-        $allowedTransitionsByRole = [
-            'super_admin' => [
-                'Masuk' => ['Masuk', 'Verifikasi'],
-                'Verifikasi' => ['Verifikasi', 'Tindak Lanjut'],
-                'Tindak Lanjut' => ['Tindak Lanjut', 'Selesai'],
-                'Selesai' => ['Selesai'],
-            ],
-            'admin' => [
-                'Masuk' => ['Masuk', 'Verifikasi'],
-                'Verifikasi' => ['Verifikasi', 'Tindak Lanjut'],
-                'Tindak Lanjut' => ['Tindak Lanjut', 'Selesai'],
-                'Selesai' => ['Selesai'],
-            ],
-            'anggota' => [
-                'Masuk' => ['Masuk', 'Verifikasi'],
-                'Verifikasi' => ['Verifikasi', 'Tindak Lanjut'],
-                'Tindak Lanjut' => ['Tindak Lanjut', 'Selesai'],
-                'Selesai' => ['Selesai'],
-            ],
-            'tenaga_ahli' => [
-                'Masuk' => ['Masuk', 'Verifikasi'],
-                'Verifikasi' => ['Verifikasi', 'Tindak Lanjut'],
-                'Tindak Lanjut' => ['Tindak Lanjut'],
-                'Selesai' => ['Selesai'],
-            ],
-            'staf' => [
-                'Masuk' => ['Masuk', 'Verifikasi'],
-                'Verifikasi' => ['Verifikasi', 'Tindak Lanjut'],
-                'Tindak Lanjut' => ['Tindak Lanjut'],
-                'Selesai' => ['Selesai'],
-            ],
+        return $data;
+    }
+
+    protected function afterSave(): void
+    {
+        if ($this->newKajianNote !== '') {
+            AspirasiNote::create([
+                'aspirasi_id' => $this->record->id,
+                'user_id' => auth()->id(),
+                'catatan' => $this->newKajianNote,
+            ]);
+        }
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getCancelFormAction()
+                ->label('Kembali ke Daftar')
+                ->url($this->getResource()::getUrl('index')),
+
+            $this->getSaveFormAction()
+                ->label('Simpan')
+                ->visible(fn (): bool => ! $this->record->isFinalState() && ! $this->isAnggotaDewan()),
         ];
+    }
 
-        $userRole = $user?->hasRole('super_admin')
-            ? 'super_admin'
-            : ($user?->hasRole('admin')
-                ? 'admin'
-                : ($user?->hasRole('anggota')
-                    ? 'anggota'
-                    : ($user?->hasRole('tenaga_ahli')
-                        ? 'tenaga_ahli'
-                        : ($user?->hasRole('staf') ? 'staf' : null))));
+    private function changeStatus(string $statusName, string $note): void
+    {
+        $this->record->changeStatus($statusName, $note);
+        $this->record->refresh();
 
-        if (! $userRole) {
-            $data['status'] = $oldStatus;
-            $newStatus = $oldStatus;
-        } else {
-            $allowedTransitions = $allowedTransitionsByRole[$userRole][$oldStatus] ?? [$oldStatus];
+        Notification::make()
+            ->success()
+            ->title('Status aspirasi berhasil diperbarui')
+            ->body("Status berubah menjadi {$statusName}.")
+            ->send();
 
-            if (! in_array($newStatus, $allowedTransitions, true)) {
-                throw ValidationException::withMessages([
-                    'status' => "Role {$userRole} tidak diizinkan mengubah status dari {$oldStatus} ke {$newStatus}.",
-                ]);
-            }
+        $this->redirect($this->getResource()::getUrl('edit', [
+            'record' => $this->record,
+        ]));
+    }
+
+    private function notifyRoles(array $roles, string $title, string $body): void
+    {
+        $users = User::role($roles)->get();
+
+        if ($users->isEmpty()) {
+            return;
         }
 
-        if ($oldStatus !== $newStatus && $statusChangeNote === '') {
-            throw ValidationException::withMessages([
-                'status_change_note' => 'Catatan perubahan status wajib diisi jika status diubah.',
+        Notification::make()
+            ->title($title)
+            ->body($body)
+            ->success()
+            ->sendToDatabase($users);
+    }
+
+    private function hasInitialAttachment(): bool
+    {
+        return $this->record->attachments()
+            ->where('stage', Attachment::STAGE_AWAL)
+            ->exists();
+    }
+
+    private function lockInitialAttachments(): void
+    {
+        $this->record->attachments()
+            ->where('stage', Attachment::STAGE_AWAL)
+            ->update([
+                'is_locked' => true,
             ]);
-        }
+    }
 
-        $oldApprovalStatus = $record->approval_status ?? 'pending';
-        $newApprovalStatus = $data['approval_status'] ?? $oldApprovalStatus;
-        $approvalNote = trim($data['approval_note'] ?? ($record->approval_note ?? ''));
-
-        $canManageApproval = $user?->canApproveAspirasi();
-
-        if (! $canManageApproval) {
-            $data['approval_status'] = $oldApprovalStatus;
-            $data['approval_note'] = $record->approval_note;
-            $data['approved_by'] = $record->approved_by;
-            $data['approved_at'] = $record->approved_at;
-            $newApprovalStatus = $oldApprovalStatus;
-        } else {
-            if (
-                $oldApprovalStatus !== $newApprovalStatus
-                && in_array($newApprovalStatus, ['approved', 'rejected'], true)
-                && $approvalNote === ''
-            ) {
-                throw ValidationException::withMessages([
-                    'approval_note' => 'Catatan approval wajib diisi saat approve atau reject.',
-                ]);
-            }
-
-            if (in_array($newApprovalStatus, ['approved', 'rejected'], true)) {
-                $data['approved_by'] = $user?->id;
-                $data['approved_at'] = now();
-                $data['approval_note'] = $approvalNote;
-            } elseif ($newApprovalStatus === 'pending') {
-                $data['approved_by'] = null;
-                $data['approved_at'] = null;
-                $data['approval_note'] = $approvalNote !== '' ? $approvalNote : null;
-            }
-        }
-
-        $record->update($data);
-
-        if ($oldStatus !== $newStatus) {
-            AspirasiStatusHistory::create([
-                'aspirasi_id' => $record->id,
-                'old_status' => $oldStatus,
-                'new_status' => $newStatus,
-                'changed_by' => $user?->id,
-                'catatan' => $statusChangeNote,
+    private function lockAllAttachments(): void
+    {
+        $this->record->attachments()
+            ->update([
+                'is_locked' => true,
             ]);
-        }
+    }
 
-        return $record;
+    private function canProcessByStaff(): bool
+    {
+        return auth()->user()?->hasAnyRole([
+            'admin',
+            'super_admin',
+            'staf',
+            'tenaga_ahli',
+        ]) ?? false;
+    }
+
+    private function canApprove(): bool
+    {
+        return auth()->user()?->hasAnyRole([
+            'admin',
+            'super_admin',
+            'anggota_dewan',
+        ]) ?? false;
+    }
+
+    private function isAnggotaDewan(): bool
+    {
+        return auth()->user()?->hasRole('anggota_dewan') ?? false;
     }
 
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
             ->success()
-            ->title('Aspirasi berhasil diperbarui');
+            ->title('Aspirasi berhasil diperbarui')
+            ->body('Data aspirasi dan catatan tindak lanjut berhasil disimpan.');
     }
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('edit', [
+            'record' => $this->record,
+        ]);
     }
 }

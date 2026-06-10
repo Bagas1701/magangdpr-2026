@@ -1,0 +1,110 @@
+/* FINAL OVERRIDE - SIMALEX FRONTEND */
+
+body.simalex-home {
+    overflow: hidden !important;
+}
+
+body.simalex-home .header .navbar-area {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(18px) !important;
+}
+
+body.simalex-home .navbar {
+    min-height: 82px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+body.simalex-home .navbar-brand {
+    margin-right: 36px !important;
+}
+
+body.simalex-home .navbar-collapse {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-grow: 1 !important;
+}
+
+body.simalex-home #nav6 {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.simalex-home #nav6 li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.simalex-home .simalex-nav {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    padding: 10px 18px !important;
+    border-radius: 999px !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+}
+
+body.simalex-home .header-action {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-left: 34px !important;
+    flex-shrink: 0 !important;
+}
+
+body.simalex-home .simalex-shell {
+    position: fixed !important;
+    top: 82px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 46px !important;
+    overflow: hidden !important;
+}
+
+body.simalex-home .simalex-track {
+    height: 100% !important;
+    display: flex !important;
+}
+
+body.simalex-home .simalex-panel {
+    flex: 0 0 100vw !important;
+    width: 100vw !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+    padding: 62px 0 86px !important;
+}
+
+body.simalex-home .simalex-panel .container {
+    min-height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+body.simalex-home .simalex-panel .row {
+    width: 100% !important;
+}
+
+body.simalex-home .footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9998 !important;
+    padding: 8px 0 !important;
+}

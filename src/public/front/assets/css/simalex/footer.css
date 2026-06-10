@@ -1,0 +1,44 @@
+/* =========================================================
+   SIMALEX FOOTER
+   Fixed glass footer for horizontal home
+   ========================================================= */
+
+.footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 998;
+    background: rgba(255,255,255,.72);
+    border-top: 1px solid rgba(47,128,237,.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding: 10px 0;
+}
+
+.footer p {
+    margin: 0;
+    color: var(--simalex-muted-2);
+    font-size: 14px;
+}
+
+body.tracking-page .footer {
+    position: static;
+}
+
+/* =========================================================
+   FOOTER LINKS
+   ========================================================= */
+
+.simalex-footer-link {
+    display: inline-block;
+    color: var(--simalex-primary);
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .25s ease;
+}
+
+.simalex-footer-link:hover {
+    color: var(--simalex-primary-dark);
+    text-decoration: underline;
+}

@@ -41,7 +41,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasAnyRole([
             'super_admin',
             'admin',
-            'anggota',
+            'anggota_dewan',
             'tenaga_ahli',
             'staf',
         ]);
@@ -77,7 +77,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasAnyRole([
             'super_admin',
             'admin',
-            'anggota',
+            'anggota_dewan',
             'tenaga_ahli',
             'staf',
         ]);
@@ -88,7 +88,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasAnyRole([
             'super_admin',
             'admin',
-            'anggota',
+            'anggota_dewan',
         ]);
     }
 }
