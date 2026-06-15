@@ -8,6 +8,9 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Notifications\ResetPassword;
+// use Filament\Facades\Filament;
+use Illuminate\Support\Facades\URL;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
@@ -90,5 +93,21 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'admin',
             'anggota_dewan',
         ]);
+    }
+
+   public function sendPasswordResetNotification($token): void
+    {
+        ResetPassword::createUrlUsing(function () use ($token) {
+            return URL::temporarySignedRoute(
+                'filament.admin.auth.password-reset.reset',
+                now()->addMinutes(config('auth.passwords.users.expire', 60)),
+                [
+                    'email' => $this->email,
+                    'token' => $token,
+                ]
+            );
+        });
+
+        $this->notify(new ResetPassword($token));
     }
 }

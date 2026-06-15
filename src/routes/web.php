@@ -6,6 +6,8 @@ use App\Http\Controllers\Frontend\TrackingController;
 use App\Http\Controllers\Frontend\AspirasiSubmissionController;
 // use App\Http\Controllers\Frontend\PublicStatisticController;
 use App\Http\Controllers\Admin\AspirasiExportController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 
@@ -51,6 +53,28 @@ Route::get('/tracking/{aspirasi}/pdf', [AspirasiPdfController::class, 'public'])
 Route::get('/admin/aspirasi/export/excel', [AspirasiExportController::class, 'excel'])
     ->middleware(['web', 'auth'])
     ->name('admin.aspirasi.export.excel');
+
+Route::get('/admin/forgot-password-custom', function () {
+    return view('auth.forgot-password-custom');
+});
+
+Route::post('/admin/forgot-password-custom', function (Request $request) {
+    $request->validate([
+        'email' => ['required', 'email'],
+    ]);
+
+    $status = Password::sendResetLink([
+        'email' => $request->email,
+    ]);
+
+    return back()->with('status', $status);
+})->name('simalex.password.email');
+
+Route::get('/test-db', function () {
+    return DB::connection()->getPdo()
+        ? 'DB OK'
+        : 'DB FAIL';
+});
 
 // Route::get('/statistik', [PublicStatisticController::class, 'index'])
 //     ->name('frontend.statistics.index');

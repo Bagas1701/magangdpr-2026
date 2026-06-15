@@ -9,7 +9,7 @@ skip-character-set-client-handshake
 skip-name-resolve
 lower_case_table_names = 1
 default-storage-engine = InnoDB
-innodb_file_format = Barracuda
+# innodb_file_format = Barracuda
 innodb_file_per_table = 1
 innodb_log_file_size = 512M
 innodb_strict_mode = 0
@@ -30,4 +30,4 @@ max_connect_errors = 100
 # limits
 tmp_table_size = 1024M
 max_heap_table_size = 1024M
-table_cache = 1024
+# table_cache = 1024
