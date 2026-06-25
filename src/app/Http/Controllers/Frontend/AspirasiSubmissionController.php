@@ -9,32 +9,70 @@ use App\Models\Konstituen;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 
 class AspirasiSubmissionController extends Controller
 {
     public function store(Request $request): RedirectResponse
     {
+        $wilayahSumutIII = config('wilayah.sumut_iii', []);
+        $kabupatenKota = array_keys($wilayahSumutIII);
+
         $validated = $request->validate([
             'nama' => ['required', 'string', 'max:255'],
-            'nik' => ['required', 'string', 'max:20'],
-            'kontak' => ['nullable', 'string', 'max:50'],
+            'nik' => ['required', 'digits:16'],
+            'kontak' => ['required', 'string', 'max:50'],
+
+            'kabupaten_kota' => ['required', 'string', Rule::in($kabupatenKota)],
+
+            'kecamatan' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) use ($request, $wilayahSumutIII) {
+                    $kabupaten = $request->input('kabupaten_kota');
+
+                    if (
+                        ! isset($wilayahSumutIII[$kabupaten]) ||
+                        ! in_array($value, $wilayahSumutIII[$kabupaten], true)
+                    ) {
+                        $fail('Kecamatan tidak sesuai dengan Kabupaten/Kota yang dipilih.');
+                    }
+                },
+            ],
+
+            'kelurahan' => ['nullable', 'string', 'max:255'],
+            'alamat' => ['nullable', 'string', 'max:1000'],
+
             'kategori_aspirasi_id' => ['nullable', 'exists:kategori_aspirasis,id'],
             'judul' => ['required', 'string', 'max:255'],
             'deskripsi' => ['required', 'string'],
             'tanggal_kejadian' => ['nullable', 'date'],
             'lokasi_kejadian' => ['nullable', 'string', 'max:255'],
+
             'privacy_consent' => ['accepted'],
+
             'attachments' => ['nullable', 'array', 'max:5'],
-            'attachments.*' => ['file', 'mimes:pdf,doc,docx,jpg,jpeg,png', 'max:5120'],
+            'attachments.*' => [
+                'file',
+                'mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,jpg,jpeg,png',
+                'max:15360',
+            ],
         ]);
 
         $aspirasi = DB::transaction(function () use ($request, $validated): Aspirasi {
             $konstituen = Konstituen::updateOrCreate(
-                ['nik' => $validated['nik']],
+                [
+                    'nik' => $validated['nik'],
+                ],
                 [
                     'nama' => $validated['nama'],
-                    'kontak' => $validated['kontak'] ?? null,
+                    'kontak' => $validated['kontak'],
+                    'kabupaten_kota' => $validated['kabupaten_kota'],
+                    'kecamatan' => $validated['kecamatan'],
+                    'kelurahan' => $validated['kelurahan'] ?? null,
+                    'alamat' => $validated['alamat'] ?? null,
                 ]
             );
 
@@ -73,6 +111,35 @@ class AspirasiSubmissionController extends Controller
         });
 
         return redirect()->route('frontend.aspirasi.success', $aspirasi);
+    }
+
+    public function checkNik(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'nik' => ['required', 'digits:16'],
+        ]);
+
+        $konstituen = Konstituen::where('nik', $validated['nik'])->first();
+
+        if (! $konstituen) {
+            return response()->json([
+                'found' => false,
+                'message' => 'Data konstituen belum ditemukan. Silakan lengkapi data diri.',
+            ]);
+        }
+
+        return response()->json([
+            'found' => true,
+            'message' => 'Data konstituen ditemukan.',
+            'data' => [
+                'nama' => $konstituen->nama,
+                'kontak' => $konstituen->kontak,
+                'kabupaten_kota' => $konstituen->kabupaten_kota,
+                'kecamatan' => $konstituen->kecamatan,
+                'kelurahan' => $konstituen->kelurahan,
+                'alamat' => $konstituen->alamat,
+            ],
+        ]);
     }
 
     public function success(Aspirasi $aspirasi): View

@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class KonstituenResource extends Resource
 {
+    protected static ?string $navigationGroup = 'Operasional';
+    
     protected static ?string $model = Konstituen::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';

@@ -7,9 +7,9 @@
     <main class="simalex-shell">
         <div id="simalexTrack" class="simalex-track">
             @include('frontend.partials.hero')
-            @include('frontend.partials.feature')
-            @include('frontend.partials.about')
-            @include('frontend.partials.dashboard-preview')
+            @include('frontend.partials.profil')
+            @include('frontend.partials.dashboard')
+            @include('frontend.partials.workflow')
             @include('frontend.partials.tracking')
             @include('frontend.partials.contact')
         </div>

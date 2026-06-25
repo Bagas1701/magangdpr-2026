@@ -20,6 +20,8 @@ class AspirasiResource extends Resource
 {
     protected static ?string $model = Aspirasi::class;
 
+    protected static ?string $navigationGroup = 'Operasional';
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationLabel = 'Aspirasi';

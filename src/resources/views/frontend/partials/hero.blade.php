@@ -1,3 +1,7 @@
+@php
+    $mangihutPhoto = \App\Models\WebsiteImage::where('name', 'Foto Mangihut')->first();
+@endphp
+
 <section id="hero" class="simalex-panel">
 
     <div class="simalex-hero-wrapper">
@@ -12,32 +16,40 @@
 
                         <div class="simalex-badge wow fadeInUp">
                             <span></span>
-                            Platform Aspirasi Konstituen Digital
+                            Portal Aspirasi Konstituen
                         </div>
 
                         <h1 class="simalex-hero-title wow fadeInUp">
-                            Aspirasi Masyarakat Kini
-                            <span>Tercatat, Terpantau,</span>
-                            dan Transparan
+                            Suara Anda,
+                            Aspirasi Kita,
+
+                            <span>
+                                Perubahan Nyata
+                            </span>
                         </h1>
 
                         <p class="simalex-hero-desc wow fadeInUp">
-
-                            SIMALEX membantu masyarakat menyampaikan
-                            aspirasi, pengaduan, dan kebutuhan
-                            konstituen secara digital dengan alur
-                            yang lebih modern, cepat, dan terintegrasi.
-
+                            Portal Aspirasi Mangihut Sinaga hadir sebagai media digital
+                            untuk menampung, memantau, dan mengelola aspirasi masyarakat
+                            secara transparan, cepat, dan terdokumentasi.
                         </p>
 
                         <div class="simalex-hero-action wow fadeInUp">
 
                             <a
-                                href="{{ route('frontend.home') }}#tracking"
-                                data-slide="4"
+                                href="{{ route('frontend.home') }}#contact"
+                                data-slide="5"
                                 class="simalex-primary-btn"
                             >
-                                Cek Aspirasi
+                                Kirim Aspirasi
+                            </a>
+
+                            <a
+                                href="{{ route('frontend.home') }}#dashboard"
+                                data-slide="2"
+                                class="simalex-outline-btn"
+                            >
+                                Lihat Statistik
                             </a>
 
                         </div>
@@ -46,17 +58,17 @@
 
                             <div class="simalex-mini-stat">
                                 <strong>24/7</strong>
-                                <span>Akses Digital</span>
+                                <span>Layanan Digital</span>
                             </div>
 
                             <div class="simalex-mini-stat">
                                 <strong>Realtime</strong>
-                                <span>Status Tracking</span>
+                                <span>Status Aspirasi</span>
                             </div>
 
                             <div class="simalex-mini-stat">
-                                <strong>Enterprise</strong>
-                                <span>Workflow DPR</span>
+                                <strong>Transparan</strong>
+                                <span>Pelayanan Publik</span>
                             </div>
 
                         </div>
@@ -69,74 +81,36 @@
 
                     <div class="simalex-hero-visual wow fadeInUp">
 
-                        <div class="simalex-dashboard-preview">
+                        <div class="mangihut-hero-photo-card">
 
-                            <div class="simalex-dashboard-top">
-                                <div class="simalex-dot"></div>
-                                <div class="simalex-dot"></div>
-                                <div class="simalex-dot"></div>
-                            </div>
-
-                            <div class="simalex-dashboard-body">
-
-                                <div class="simalex-dashboard-card">
-                                    <small>Total Aspirasi</small>
-                                    <h3>1,248</h3>
+                            @if ($mangihutPhoto?->image)
+                                <img
+                                    src="{{ Storage::url($mangihutPhoto->image) }}"
+                                    alt="Mangihut Sinaga"
+                                    class="mangihut-hero-photo"
+                                >
+                            @else
+                                <div class="mangihut-photo-placeholder">
+                                    Foto Mangihut Sinaga
                                 </div>
+                            @endif
 
-                                <div class="simalex-dashboard-card">
-                                    <small>Sedang Diproses</small>
-                                    <h3>324</h3>
-                                </div>
-
-                                <div class="simalex-dashboard-card">
-                                    <small>Selesai</small>
-                                    <h3>876</h3>
-                                </div>
-
-                            </div>
-
-                            <div class="simalex-progress-wrapper">
-
-                                <div class="simalex-progress-item">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Verifikasi Aspirasi</span>
-                                        <span>82%</span>
-                                    </div>
-
-                                    <div class="progress">
-                                        <div
-                                            class="progress-bar"
-                                            style="width: 82%"
-                                        ></div>
-                                    </div>
-                                </div>
-
-                                <div class="simalex-ticket-card">
-
-                                    <div>
-                                        <small>No Tiket</small>
-                                        <h5>SMX-2026-00124</h5>
-                                    </div>
-
-                                    <span class="badge bg-success">
-                                        Diproses
-                                    </span>
-
-                                </div>
-
+                            <div class="mangihut-hero-profile-card">
+                                <h5>Mangihut Sinaga, S.H., M.H.</h5>
+                                <p>Anggota DPR RI Komisi III</p>
+                                <span>Daerah Pemilihan Sumatera Utara III</span>
                             </div>
 
                         </div>
 
                         <div class="simalex-floating-card simalex-floating-1">
                             <i class="lni lni-checkmark-circle"></i>
-                            Aspirasi Diverifikasi
+                            Aspirasi Terdokumentasi
                         </div>
 
                         <div class="simalex-floating-card simalex-floating-2">
-                            <i class="lni lni-timer"></i>
-                            Tracking Realtime
+                            <i class="lni lni-map-marker"></i>
+                            Dapil Sumatera Utara III
                         </div>
 
                     </div>

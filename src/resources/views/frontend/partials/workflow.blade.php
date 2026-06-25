@@ -13,8 +13,8 @@
                         <div class="simalex-about-header">
 
                             <div>
-                                <small>System Overview</small>
-                                <h4>SIMALEX Workflow</h4>
+                                <small>Alur Layanan</small>
+                                <h4>Workflow Aspirasi</h4>
                             </div>
 
                             <span class="simalex-about-status">
@@ -26,7 +26,7 @@
                         <div class="simalex-about-summary">
 
                             <div>
-                                <strong>4</strong>
+                                <strong>5</strong>
                                 <span>Tahap Proses</span>
                             </div>
 
@@ -44,7 +44,7 @@
 
                                 <div>
                                     <strong>Aspirasi Masuk</strong>
-                                    <p>Data aspirasi diterima dan dicatat ke sistem.</p>
+                                    <p>Aspirasi diterima melalui formulir publik atau kanal resmi.</p>
                                 </div>
                             </div>
 
@@ -53,7 +53,7 @@
 
                                 <div>
                                     <strong>Verifikasi</strong>
-                                    <p>Pemeriksaan data, dokumen, dan kelengkapan aspirasi.</p>
+                                    <p>Petugas memeriksa data, kelengkapan dokumen, dan validasi informasi.</p>
                                 </div>
                             </div>
 
@@ -62,7 +62,16 @@
 
                                 <div>
                                     <strong>Tindak Lanjut</strong>
-                                    <p>Kajian, rekomendasi, dan proses penanganan oleh pihak terkait.</p>
+                                    <p>Aspirasi dikaji, dikoordinasikan, dan diproses sesuai kebutuhan.</p>
+                                </div>
+                            </div>
+
+                            <div class="simalex-about-step">
+                                <div class="step-dot"></div>
+
+                                <div>
+                                    <strong>Persetujuan Dewan</strong>
+                                    <p>Keputusan akhir dicatat oleh anggota dewan untuk dokumentasi.</p>
                                 </div>
                             </div>
 
@@ -71,7 +80,7 @@
 
                                 <div>
                                     <strong>Selesai</strong>
-                                    <p>Approval akhir, dokumentasi keputusan, dan penutupan aspirasi.</p>
+                                    <p>Aspirasi ditutup setelah proses penanganan dan dokumentasi selesai.</p>
                                 </div>
                             </div>
 
@@ -81,7 +90,7 @@
 
                     <div class="simalex-about-floating-card">
                         <i class="lni lni-shield"></i>
-                        Data lebih aman dan terdokumentasi
+                        Transparan, akuntabel, dan terdokumentasi
                     </div>
 
                 </div>
@@ -98,14 +107,14 @@
                     </div>
 
                     <h2 class="simalex-section-title">
-                        Workflow Aspirasi dari Pengajuan hingga Penyelesaian
+                        Dari Pengajuan hingga Penyelesaian Aspirasi
                     </h2>
 
                     <p class="simalex-section-desc">
-                        SIMALEX membantu proses pengelolaan aspirasi
-                        konstituen menjadi lebih terstruktur, transparan,
-                        dan terdokumentasi mulai dari pengajuan hingga
-                        penyelesaian akhir.
+                        Portal Aspirasi Mangihut Sinaga membantu proses
+                        pengelolaan aspirasi masyarakat menjadi lebih
+                        terstruktur, transparan, dan mudah dipantau dari
+                        awal pengajuan hingga penyelesaian akhir.
                     </p>
 
                     <div class="simalex-about-list">
@@ -117,12 +126,12 @@
                             </div>
 
                             <div>
-                                <h6>Tracking Histori Status</h6>
+                                <h6>Tracking Realtime</h6>
 
                                 <p>
-                                    Riwayat perubahan status tercatat
-                                    secara realtime sehingga proses penanganan
-                                    lebih mudah dipantau.
+                                    Setiap perubahan status tercatat secara
+                                    sistematis sehingga perkembangan aspirasi
+                                    dapat dipantau dengan lebih mudah.
                                 </p>
                             </div>
 
@@ -135,12 +144,12 @@
                             </div>
 
                             <div>
-                                <h6>Monitoring Internal DPR</h6>
+                                <h6>Monitoring Internal</h6>
 
                                 <p>
-                                    Dashboard membantu staf dan tenaga ahli
-                                    memantau data aspirasi, prioritas, dan
-                                    perkembangan tindak lanjut.
+                                    Staf dan tenaga ahli dapat memantau
+                                    aspirasi, prioritas, dokumen, serta
+                                    perkembangan tindak lanjut melalui sistem.
                                 </p>
                             </div>
 
@@ -153,12 +162,12 @@
                             </div>
 
                             <div>
-                                <h6>Approval Anggota Dewan</h6>
+                                <h6>Keputusan Terdokumentasi</h6>
 
                                 <p>
-                                    Keputusan akhir dapat dicatat melalui
-                                    sistem agar proses penyelesaian lebih
-                                    jelas dan terdokumentasi.
+                                    Persetujuan dan catatan akhir dari anggota
+                                    dewan terdokumentasi agar proses pelayanan
+                                    lebih jelas dan akuntabel.
                                 </p>
                             </div>
 

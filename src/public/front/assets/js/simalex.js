@@ -28,11 +28,23 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
+    function playPanelAnimation(index) {
+        panels.forEach((panel) => {
+            panel.classList.remove("is-entering");
+        });
+
+        const activePanel = panels[index];
+
+        if (!activePanel) return;
+
+        void activePanel.offsetWidth;
+
+        activePanel.classList.add("is-entering");
+    }
+
     function goToPanel(index) {
         if (!isHomePage()) return;
-
         if (index < 0 || index >= panels.length) return;
-
         if (isAnimating) return;
 
         isAnimating = true;
@@ -45,8 +57,12 @@ document.addEventListener("DOMContentLoaded", function () {
         panels[index].scrollTop = 0;
 
         setTimeout(() => {
+            playPanelAnimation(index);
+        }, 120);
+
+        setTimeout(() => {
             isAnimating = false;
-        }, 850);
+        }, 760);
     }
 
     slideTriggers.forEach((trigger) => {
@@ -54,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const index = Number(this.dataset.slide);
 
             if (Number.isNaN(index)) return;
-
             if (!isHomePage()) return;
 
             event.preventDefault();
@@ -86,5 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    goToPanel(0);
+    updateActiveState(0);
+    playPanelAnimation(0);
 });

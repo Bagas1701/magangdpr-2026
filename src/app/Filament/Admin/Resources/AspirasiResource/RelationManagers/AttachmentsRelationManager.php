@@ -105,8 +105,38 @@ class AttachmentsRelationManager extends RelationManager
                             ->preserveFilenames()
                             ->downloadable()
                             ->openable()
-                            ->required(),
+                            ->acceptedFileTypes([
+                                'application/pdf',
+                                '.pdf',
 
+                                'application/msword',
+                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                '.doc',
+                                '.docx',
+
+                                'application/vnd.ms-powerpoint',
+                                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                                '.ppt',
+                                '.pptx',
+
+                                'application/vnd.ms-excel',
+                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                '.xls',
+                                '.xlsx',
+
+                                'image/jpeg',
+                                'image/png',
+                                '.jpg',
+                                '.jpeg',
+                                '.png',
+                            ])
+                            ->rules([
+                                'file',
+                                'mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,jpg,jpeg,png',
+                                'max:15360',
+                            ])
+                            ->maxSize(15360)
+                            ->required(),
                         Forms\Components\Textarea::make('description')
                             ->label('Catatan Lampiran')
                             ->rows(3)

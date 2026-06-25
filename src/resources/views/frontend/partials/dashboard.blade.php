@@ -10,23 +10,44 @@
 
                     <div class="simalex-badge">
                         <span></span>
-                        Dashboard Statistik
+                        Dashboard Publik
                     </div>
 
                     <h2 class="simalex-section-title">
-                        Monitoring Aspirasi Berbasis Data
+                        Statistik Aspirasi
+                        <span>Berbasis Data</span>
                     </h2>
 
                     <p class="simalex-section-desc">
-                        SIMALEX menampilkan statistik aspirasi secara ringkas
-                        berdasarkan jumlah laporan, status penanganan, dan
-                        perkembangan tindak lanjut tanpa menampilkan data pribadi.
+                        Pantau perkembangan aspirasi masyarakat secara
+                        transparan melalui ringkasan data jumlah aspirasi,
+                        status penanganan, tingkat penyelesaian, dan kategori
+                        aspirasi yang paling banyak diterima.
                     </p>
 
                     <div class="simalex-dashboard-note">
                         <i class="lni lni-dashboard"></i>
-                        Dashboard ini menampilkan ringkasan data aspirasi
-                        secara publik sebagai bentuk transparansi layanan.
+                        Data yang ditampilkan bersifat ringkasan publik
+                        tanpa menampilkan informasi pribadi masyarakat.
+                    </div>
+
+                    <div class="simalex-tracking-points mt-4">
+
+                        <div>
+                            <i class="lni lni-checkmark-circle"></i>
+                            <span>Data aspirasi tercatat</span>
+                        </div>
+
+                        <div>
+                            <i class="lni lni-checkmark-circle"></i>
+                            <span>Monitoring status penanganan</span>
+                        </div>
+
+                        <div>
+                            <i class="lni lni-checkmark-circle"></i>
+                            <span>Transparansi layanan publik</span>
+                        </div>
+
                     </div>
 
                 </div>
@@ -39,8 +60,8 @@
 
                     <div class="simalex-dashboard-showcase-header">
                         <div>
-                            <small>Public Monitoring</small>
-                            <h4>Ringkasan Aspirasi</h4>
+                            <small>Ringkasan Aspirasi</small>
+                            <h4>Portal Aspirasi Mangihut Sinaga</h4>
                         </div>
 
                         <span>Live Data</span>
@@ -55,7 +76,7 @@
                         </div>
 
                         <div class="simalex-dashboard-stat">
-                            <small>Diproses</small>
+                            <small>Sedang Diproses</small>
                             <strong>{{ number_format($processedAspirasi) }}</strong>
                             <span>Verifikasi & tindak lanjut</span>
                         </div>
@@ -63,7 +84,7 @@
                         <div class="simalex-dashboard-stat">
                             <small>Selesai</small>
                             <strong>{{ number_format($finishedAspirasi) }}</strong>
-                            <span>Telah ditutup</span>
+                            <span>Telah ditindaklanjuti</span>
                         </div>
 
                     </div>
@@ -96,12 +117,23 @@
                                         $height = $totalAspirasi > 0
                                             ? max(12, min(100, ($count / $totalAspirasi) * 100))
                                             : 12;
+
+                                        $shortLabel = match ($label) {
+                                            'Menunggu Persetujuan' => 'Approval',
+                                            'Tindak Lanjut' => 'Tindak',
+                                            default => $label,
+                                        };
                                     @endphp
 
-                                    <div
-                                        title="{{ $label }}: {{ $count }}"
-                                        style="height: {{ $height }}%"
-                                    ></div>
+                                    <div class="simalex-chart-item" title="{{ $label }}: {{ $count }} aspirasi">
+                                        <div class="simalex-chart-bar-wrap">
+                                            <div class="simalex-chart-bar" style="height: {{ $height }}%"></div>
+                                        </div>
+
+                                        <small class="simalex-chart-label">
+                                            {{ $shortLabel }}
+                                        </small>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>

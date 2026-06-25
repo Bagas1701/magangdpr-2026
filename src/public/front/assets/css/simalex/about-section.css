@@ -149,7 +149,7 @@
 .simalex-about-step.completed .step-dot,
 .simalex-about-step.active .step-dot {
     background: var(--simalex-primary);
-    box-shadow: 0 0 0 6px rgba(47, 128, 237, .14);
+    box-shadow: 0 0 0 6px rgba(247,181,0,.18);
 }
 
 .simalex-about-step strong {
@@ -214,13 +214,13 @@
     width: 58px;
     height: 58px;
     border-radius: 18px;
-    background: linear-gradient(135deg, var(--simalex-primary), var(--simalex-accent));
+    background: linear-gradient(135deg, #F7B500,#E0A100);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     flex-shrink: 0;
-    box-shadow: 0 14px 35px rgba(47, 128, 237, .20);
+    box-shadow: 0 14px 35px rgba(247,181,0,.24);
 }
 
 .simalex-about-item .icon i {

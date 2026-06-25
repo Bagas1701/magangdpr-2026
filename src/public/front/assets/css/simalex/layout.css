@@ -11,15 +11,15 @@
     bottom: var(--simalex-footer-height);
     overflow: hidden;
     background:
-        radial-gradient(circle at top left, rgba(47, 128, 237, .12), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(111, 168, 255, .10), transparent 24%),
-        linear-gradient(135deg, #eef5ff 0%, #f8fbff 48%, #ffffff 100%);
+        radial-gradient(circle at top left, rgba(247,181,0,.10), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255,224,130,.10), transparent 24%),
+        linear-gradient(135deg,#FFFDF7 0%,#FFF8E1 50%,#FFFFFF 100%);
 }
 
 .simalex-track {
     height: 100%;
     display: flex;
-    transition: transform .9s cubic-bezier(.77, 0, .175, 1);
+    transition: transform .72s cubic-bezier(.22, 1, .36, 1);
     will-change: transform;
 }
 
@@ -65,6 +65,15 @@
     min-height: 100%;
     display: flex;
     align-items: center;
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity .45s ease,
+        transform .45s ease;
+}
+
+.simalex-panel.is-entering .container {
+    animation: simalexPanelEnter .55s ease both;
 }
 
 .simalex-panel .row {

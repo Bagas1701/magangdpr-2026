@@ -4,79 +4,24 @@
     <meta charset="utf-8">
     <title>Laporan Aspirasi</title>
     <style>
-        body {
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 11px;
-            color: #111827;
-        }
-
-        .header {
-            text-align: center;
-            border-bottom: 2px solid #111827;
-            padding-bottom: 10px;
-            margin-bottom: 18px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        .header p {
-            margin: 4px 0 0;
-            font-size: 11px;
-        }
-
-        .section {
-            margin-bottom: 16px;
-        }
-
-        .section-title {
-            font-weight: bold;
-            font-size: 13px;
-            margin-bottom: 6px;
-            padding: 6px;
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        td, th {
-            border: 1px solid #d1d5db;
-            padding: 6px;
-            vertical-align: top;
-        }
-
-        th {
-            background: #f9fafb;
-            text-align: left;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 6px;
-            border-radius: 4px;
-            background: #e5e7eb;
-            font-size: 10px;
-        }
-
-        .footer {
-            margin-top: 30px;
-            font-size: 10px;
-            color: #6b7280;
-            text-align: right;
-        }
+        body { font-family: DejaVu Sans, sans-serif; font-size: 11px; color: #111827; }
+        .header { text-align: center; border-bottom: 2px solid #111827; padding-bottom: 10px; margin-bottom: 18px; }
+        .header h1 { margin: 0; font-size: 18px; }
+        .header p { margin: 4px 0 0; font-size: 11px; }
+        .section { margin-bottom: 16px; }
+        .section-title { font-weight: bold; font-size: 13px; margin-bottom: 6px; padding: 6px; background: #f3f4f6; border: 1px solid #d1d5db; }
+        table { width: 100%; border-collapse: collapse; }
+        td, th { border: 1px solid #d1d5db; padding: 6px; vertical-align: top; }
+        th { background: #f9fafb; text-align: left; }
+        .badge { display: inline-block; padding: 3px 6px; border-radius: 4px; background: #e5e7eb; font-size: 10px; }
+        .footer { margin-top: 30px; font-size: 10px; color: #6b7280; text-align: right; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>LAPORAN ASPIRASI KONSTITUEN</h1>
-        <p>SIMALEX - Sistem Informasi Manajemen Aspirasi Legislatif</p>
-        <p>Kantor Anggota DPR RI Komisi III - Dapil Sumatera Utara III</p>
+        <p>Portal Aspirasi Mangihut Sinaga</p>
+        <p>Anggota DPR RI Komisi III - Daerah Pemilihan Sumatera Utara III</p>
     </div>
 
     <div class="section">
@@ -205,6 +150,7 @@
                     <th>Jenis</th>
                     <th>Nama File</th>
                     <th>Diunggah Oleh</th>
+                    <th>Waktu</th>
                 </tr>
             </thead>
             <tbody>
@@ -215,10 +161,11 @@
                         <td>{{ \App\Models\Attachment::categoryOptions()[$attachment->attachment_category] ?? '-' }}</td>
                         <td>{{ $attachment->original_name }}</td>
                         <td>{{ $attachment->uploader?->name ?? '-' }}</td>
+                        <td>{{ $attachment->created_at?->format('d M Y H:i') ?? '-' }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5">Belum ada lampiran.</td>
+                        <td colspan="6">Belum ada lampiran.</td>
                     </tr>
                 @endforelse
             </tbody>

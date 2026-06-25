@@ -10,7 +10,7 @@
 
                     <div class="simalex-badge">
                         <span></span>
-                        Layanan Aspirasi
+                        Layanan Publik
                     </div>
 
                     <h2 class="simalex-section-title">
@@ -18,9 +18,9 @@
                     </h2>
 
                     <p class="simalex-section-desc">
-                        Masyarakat dapat mengecek perkembangan aspirasi
-                        secara mandiri melalui nomor tiket yang diterima
-                        setelah aspirasi tercatat di sistem.
+                        Masyarakat dapat memantau perkembangan aspirasi
+                        melalui nomor tiket resmi dari Portal Aspirasi
+                        Mangihut Sinaga.
                     </p>
 
                     <div class="simalex-tracking-points">
@@ -32,12 +32,12 @@
 
                         <div>
                             <i class="lni lni-checkmark-circle"></i>
-                            <span>Progress bar penanganan</span>
+                            <span>Progress penanganan aspirasi</span>
                         </div>
 
                         <div>
                             <i class="lni lni-checkmark-circle"></i>
-                            <span>Informasi tindak lanjut</span>
+                            <span>Ringkasan perkembangan aspirasi</span>
                         </div>
 
                     </div>
@@ -46,8 +46,8 @@
                         <i class="lni lni-shield"></i>
 
                         <div>
-                            <strong>Data status bersifat informatif</strong>
-                            <small>Gunakan nomor tiket resmi dari sistem SIMALEX.</small>
+                            <strong>Data publik dibatasi untuk keamanan</strong>
+                            <small>Dokumen internal hanya dapat diakses oleh petugas berwenang.</small>
                         </div>
                     </div>
 
@@ -62,7 +62,7 @@
                     <div class="simalex-tracking-card-header">
 
                         <div>
-                            <small>Layanan Publik</small>
+                            <small>Portal Aspirasi Mangihut Sinaga</small>
                             <h4>Cek Status Aspirasi</h4>
                         </div>
 

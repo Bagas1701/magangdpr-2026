@@ -47,6 +47,10 @@ Route::get('/admin/aspirasi/{aspirasi}/pdf', [AspirasiPdfController::class, 'sho
 Route::view('/kebijakan-privasi', 'frontend.privacy')
     ->name('frontend.privacy');
 
+Route::get('/privacy', function () {
+    return view('frontend.privacy');
+})->name('privacy');
+
 Route::get('/tracking/{aspirasi}/pdf', [AspirasiPdfController::class, 'public'])
     ->name('frontend.tracking.pdf');
 
@@ -57,6 +61,9 @@ Route::get('/admin/aspirasi/export/excel', [AspirasiExportController::class, 'ex
 Route::get('/admin/forgot-password-custom', function () {
     return view('auth.forgot-password-custom');
 });
+
+Route::get('/konstituen/check-nik', [AspirasiSubmissionController::class, 'checkNik'])
+    ->name('frontend.konstituen.check-nik');
 
 Route::post('/admin/forgot-password-custom', function (Request $request) {
     $request->validate([
@@ -70,11 +77,6 @@ Route::post('/admin/forgot-password-custom', function (Request $request) {
     return back()->with('status', $status);
 })->name('simalex.password.email');
 
-Route::get('/test-db', function () {
-    return DB::connection()->getPdo()
-        ? 'DB OK'
-        : 'DB FAIL';
-});
 
 // Route::get('/statistik', [PublicStatisticController::class, 'index'])
 //     ->name('frontend.statistics.index');

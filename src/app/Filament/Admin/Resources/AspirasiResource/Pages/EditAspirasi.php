@@ -6,7 +6,7 @@ use App\Filament\Admin\Resources\AspirasiResource;
 use App\Models\Aspirasi;
 use App\Models\AspirasiNote;
 use App\Models\Attachment;
-use App\Models\User;
+use App\Services\AspirasiNotificationService;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -59,6 +59,8 @@ class EditAspirasi extends EditRecord
 
                     $this->lockInitialAttachments();
 
+                    AspirasiNotificationService::menungguTindakLanjut($this->record);
+
                     $this->changeStatus(
                         Aspirasi::STATUS_TINDAK_LANJUT,
                         'Verifikasi selesai. File awal dikunci dan aspirasi masuk tahap tindak lanjut.'
@@ -74,11 +76,7 @@ class EditAspirasi extends EditRecord
                 ->modalHeading('Ajukan ke Anggota Dewan')
                 ->modalDescription('Status aspirasi akan berubah menjadi Menunggu Persetujuan.')
                 ->action(function (): void {
-                    $this->notifyRoles(
-                        ['admin', 'super_admin', 'anggota_dewan'],
-                        'Aspirasi menunggu persetujuan',
-                        'Aspirasi telah diajukan untuk persetujuan: ' . $this->record->judul
-                    );
+                    AspirasiNotificationService::menungguPersetujuan($this->record);
 
                     $this->changeStatus(
                         Aspirasi::STATUS_MENUNGGU_PERSETUJUAN,
@@ -120,11 +118,7 @@ class EditAspirasi extends EditRecord
 
                     $this->lockAllAttachments();
 
-                    $this->notifyRoles(
-                        ['admin', 'super_admin', 'staf', 'tenaga_ahli'],
-                        'Aspirasi disetujui',
-                        'Aspirasi telah disetujui dan dinyatakan selesai: ' . $this->record->judul
-                    );
+                    AspirasiNotificationService::keputusanDewan($this->record, 'disetujui dan dinyatakan selesai');
 
                     $this->changeStatus(
                         Aspirasi::STATUS_SELESAI,
@@ -181,11 +175,7 @@ class EditAspirasi extends EditRecord
                         'Anggota Dewan meminta revisi. Catatan: ' . $data['approval_note']
                     );
 
-                    $this->notifyRoles(
-                        ['admin', 'super_admin', 'staf', 'tenaga_ahli'],
-                        'Aspirasi perlu revisi',
-                        'Anggota Dewan meminta revisi pada aspirasi: ' . $this->record->judul
-                    );
+                    AspirasiNotificationService::keputusanDewan($this->record, 'diminta revisi');
 
                     Notification::make()
                         ->success()
@@ -237,11 +227,7 @@ class EditAspirasi extends EditRecord
 
                     $this->lockAllAttachments();
 
-                    $this->notifyRoles(
-                        ['admin', 'super_admin', 'staf', 'tenaga_ahli'],
-                        'Aspirasi ditolak',
-                        'Aspirasi ditolak oleh Anggota Dewan: ' . $this->record->judul
-                    );
+                    AspirasiNotificationService::keputusanDewan($this->record, 'ditolak');
 
                     $this->changeStatus(
                         Aspirasi::STATUS_DITOLAK,
@@ -250,10 +236,16 @@ class EditAspirasi extends EditRecord
                 }),
 
             Actions\DeleteAction::make()
-                ->visible(fn (): bool => auth()->user()?->hasAnyRole([
-                    'admin',
-                    'super_admin',
-                ]) ?? false),
+            ->before(function (): void {
+                $judul = $this->record->judul;
+                $nomor = $this->record->nomor_tiket ?? '-';
+
+                AspirasiNotificationService::aspirasiDihapusByData($judul, $nomor);
+            })
+            ->visible(fn (): bool => auth()->user()?->hasAnyRole([
+                'admin',
+                'super_admin',
+            ]) ?? false),
         ];
     }
 
@@ -308,21 +300,6 @@ class EditAspirasi extends EditRecord
         $this->redirect($this->getResource()::getUrl('edit', [
             'record' => $this->record,
         ]));
-    }
-
-    private function notifyRoles(array $roles, string $title, string $body): void
-    {
-        $users = User::role($roles)->get();
-
-        if ($users->isEmpty()) {
-            return;
-        }
-
-        Notification::make()
-            ->title($title)
-            ->body($body)
-            ->success()
-            ->sendToDatabase($users);
     }
 
     private function hasInitialAttachment(): bool

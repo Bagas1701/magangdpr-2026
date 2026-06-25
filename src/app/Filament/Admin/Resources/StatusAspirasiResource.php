@@ -14,6 +14,7 @@ class StatusAspirasiResource extends Resource
 {
     protected static ?string $model = StatusAspirasi::class;
 
+    protected static ?string $navigationGroup = 'Operasional';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Status Aspirasi';
     protected static ?string $modelLabel = 'Status Aspirasi';

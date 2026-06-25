@@ -1,6 +1,5 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Tracking Aspirasi - SIMALEX')
 @section('body_class', 'tracking-page')
 
 @section('content')
@@ -14,11 +13,15 @@
                         Tracking Aspirasi
                     </div>
 
+                    <a href="{{ route('frontend.home') }}" class="simalex-back-track-btn">
+                        ← Kembali ke Beranda
+                    </a>
+
                     <h1>Cek Status Aspirasi</h1>
 
                     <p>
-                        Masukkan nomor tiket untuk melihat perkembangan
-                        aspirasi, status terakhir, dan riwayat tindak lanjut.
+                        Masukkan nomor tiket untuk melihat status,
+                        progress, dan ringkasan perkembangan aspirasi.
                     </p>
                 </div>
 
@@ -60,9 +63,28 @@
                         'masuk' => 'status-masuk',
                         'verifikasi' => 'status-verifikasi',
                         'tindak lanjut' => 'status-tindak',
+                        'menunggu persetujuan' => 'status-verifikasi',
                         'selesai' => 'status-selesai',
                         'ditolak' => 'status-ditolak',
                         default => 'status-masuk',
+                    };
+
+                    $dokumenAwalCount = $aspirasi->attachments
+                        ->where('stage', '!=', 'tindak_lanjut')
+                        ->count();
+
+                    $dokumenTindakLanjutCount = $aspirasi->attachments
+                        ->where('stage', 'tindak_lanjut')
+                        ->count();
+
+                    $publicStatusMessage = match ($aspirasi->status?->nama) {
+                        'Masuk' => 'Aspirasi telah diterima oleh sistem dan menunggu proses verifikasi awal.',
+                        'Verifikasi' => 'Aspirasi sedang dalam proses verifikasi data dan kelengkapan dokumen.',
+                        'Tindak Lanjut' => 'Aspirasi sedang ditindaklanjuti oleh tim pendukung Anggota DPR RI dan dilakukan koordinasi dengan pihak terkait sesuai kebutuhan penanganan.',
+                        'Menunggu Persetujuan' => 'Aspirasi telah ditindaklanjuti dan sedang menunggu persetujuan atau arahan dari Anggota Dewan.',
+                        'Selesai' => 'Aspirasi telah selesai ditindaklanjuti. Informasi hasil penanganan akan disampaikan kepada pelapor melalui kontak yang tercatat.',
+                        'Ditolak' => 'Aspirasi tidak dapat diproses lebih lanjut berdasarkan hasil verifikasi atau pertimbangan penanganan.',
+                        default => 'Perkembangan aspirasi telah diperbarui oleh sistem.',
                     };
                 @endphp
 
@@ -91,7 +113,7 @@
                             class="simalex-download-pdf-btn btn btn-sm"
                         >
                             <i class="lni lni-download"></i>
-                            Unduh PDF Aspirasi
+                            Unduh Bukti Aspirasi
                         </a>
                     </div>
 
@@ -127,29 +149,50 @@
                     </div>
 
                     <div class="simalex-result-section-title">
+                        Perkembangan Aspirasi
+                    </div>
+
+                    <div class="simalex-public-update-card">
+                        <i class="lni lni-information"></i>
+
+                        <div>
+                            <strong>{{ $aspirasi->status?->nama ?? 'Status diperbarui' }}</strong>
+                            <p>{{ $publicStatusMessage }}</p>
+                        </div>
+                    </div>
+
+                    <div class="simalex-result-section-title">
                         Timeline Aspirasi
                     </div>
 
                     <div class="simalex-result-timeline">
                         @forelse ($aspirasi->statusHistories as $history)
+                            @php
+                                $historyMessage = match ($history->new_status) {
+                                    'Masuk' => 'Aspirasi telah diterima oleh sistem.',
+                                    'Verifikasi' => 'Aspirasi sedang dalam proses verifikasi data dan kelengkapan dokumen.',
+                                    'Tindak Lanjut' => 'Aspirasi sedang memasuki tahap tindak lanjut oleh tim pendukung Anggota DPR RI.',
+                                    'Menunggu Persetujuan' => 'Aspirasi sedang menunggu persetujuan atau arahan dari Anggota Dewan.',
+                                    'Selesai' => 'Aspirasi telah selesai ditindaklanjuti.',
+                                    'Ditolak' => 'Aspirasi tidak dapat diproses lebih lanjut berdasarkan hasil verifikasi.',
+                                    default => 'Perkembangan aspirasi telah diperbarui.',
+                                };
+                            @endphp
+
                             <div class="simalex-result-timeline-item">
                                 <div class="timeline-marker"></div>
 
                                 <div class="timeline-content">
                                     <h5>
-                                        {{ $history->old_status ?? '-' }}
-                                        →
                                         {{ $history->new_status ?? '-' }}
                                     </h5>
 
                                     <span>
                                         {{ $history->created_at?->format('d M Y H:i') }}
-                                        •
-                                        {{ $history->changer?->name ?? 'System' }}
                                     </span>
 
                                     <p>
-                                        {{ $history->catatan ?? '-' }}
+                                        {{ $historyMessage }}
                                     </p>
                                 </div>
                             </div>
@@ -164,38 +207,34 @@
                         Dokumen Pendukung
                     </div>
 
-                    <div class="simalex-attachment-list">
-                        @forelse ($aspirasi->attachments as $attachment)
-                            <div class="simalex-attachment-item">
-                                <div class="simalex-attachment-icon">
-                                    <i class="lni lni-files"></i>
-                                </div>
+                    <div class="simalex-public-doc-summary">
 
-                                <div class="simalex-attachment-content">
-                                    <strong>
-                                        {{ $attachment->original_name }}
-                                    </strong>
-
-                                    <span>
-                                        {{ strtoupper(pathinfo($attachment->original_name, PATHINFO_EXTENSION)) }}
-                                        •
-                                        {{ number_format(($attachment->file_size ?? 0) / 1024, 1) }} KB
-                                    </span>
-                                </div>
-
-                                <a
-                                    href="{{ asset('storage/' . $attachment->file_path) }}"
-                                    target="_blank"
-                                    class="simalex-attachment-link"
-                                >
-                                    Lihat
-                                </a>
+                        <div class="simalex-public-doc-item">
+                            <div class="simalex-public-doc-icon">
+                                <i class="lni lni-files"></i>
                             </div>
-                        @empty
-                            <p class="text-muted">
-                                Belum ada dokumen pendukung.
-                            </p>
-                        @endforelse
+
+                            <div>
+                                <strong>Dokumen pengajuan diterima</strong>
+                                <span>{{ $dokumenAwalCount }} file telah tersimpan dalam sistem.</span>
+                            </div>
+                        </div>
+
+                        <div class="simalex-public-doc-item locked">
+                            <div class="simalex-public-doc-icon">
+                                <i class="lni lni-lock"></i>
+                            </div>
+
+                            <div>
+                                <strong>Dokumen tindak lanjut internal</strong>
+                                <span>{{ $dokumenTindakLanjutCount }} file digunakan untuk proses internal penanganan aspirasi.</span>
+                            </div>
+                        </div>
+
+                        <div class="simalex-public-doc-note">
+                            Dokumen tindak lanjut, kajian, dan lampiran internal hanya dapat diakses oleh petugas yang berwenang untuk menjaga keamanan serta kerahasiaan data.
+                        </div>
+
                     </div>
 
                 </div>
@@ -203,4 +242,104 @@
 
         </div>
     </main>
+
+    @push('styles')
+<style>
+    .header {
+        display: none !important;
+    }
+
+    .simalex-shell,
+    main {
+        padding-top: 50px !important;
+        margin-top: 0px !important;
+    }
+
+    .simalex-public-update-card {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 18px;
+        border-radius: 20px;
+        background: #f8fbff;
+        border: 1px solid #dbeafe;
+        margin-bottom: 24px;
+    }
+
+    .simalex-public-update-card i {
+        font-size: 22px;
+        color: #2F80ED;
+        margin-top: 2px;
+    }
+
+    .simalex-public-update-card strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #1a2340;
+    }
+
+    .simalex-public-update-card p {
+        margin: 0;
+        color: #4b5563;
+        line-height: 1.7;
+    }
+
+    .simalex-public-doc-summary {
+        display: grid;
+        gap: 14px;
+    }
+
+    .simalex-public-doc-item {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 16px;
+        border-radius: 18px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+    }
+
+    .simalex-public-doc-item.locked {
+        background: #f9fafb;
+    }
+
+    .simalex-public-doc-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: #eef5ff;
+        color: #2F80ED;
+        flex-shrink: 0;
+    }
+
+    .simalex-public-doc-item.locked .simalex-public-doc-icon {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .simalex-public-doc-item strong {
+        display: block;
+        color: #1a2340;
+        margin-bottom: 4px;
+    }
+
+    .simalex-public-doc-item span {
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .simalex-public-doc-note {
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        color: #9a3412;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+</style>
+@endpush
+
 @endsection

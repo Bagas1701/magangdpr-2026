@@ -36,9 +36,8 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('30s')
             ->spa()
             ->login()
-            // ->login(\App\Filament\Pages\Auth\Login::class)
             ->passwordReset()
-            ->brandName('SIMALEX')
+            ->brandName('Portal Aspirasi Mangihut Sinaga')
             ->profile(\App\Filament\Pages\Auth\EditProfile::class, isSimple: false)
             ->defaultThemeMode(ThemeMode::Light)
             ->font('Montserrat')
@@ -48,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
                 fn () => Blade::render('
-                    <div class="mb-4">
+                    <div class="mb-4 text-center">
                         <a href="/" class="text-sm font-semibold text-amber-600 hover:text-amber-700">
                             ← Kembali ke Beranda
                         </a>
@@ -60,7 +59,8 @@ class AdminPanelProvider extends PanelProvider
                 fn () => Blade::render('
                     <div class="mt-6 text-center text-xs text-gray-500">
                         <p>Akses terbatas untuk staf, tenaga ahli, dan anggota dewan.</p>
-                        <p class="mt-1 font-semibold">SIMALEX v1.0</p>
+                        <p class="mt-1 font-semibold">Powered by SIMALEX v1.0</p>
+                        <p class="mt-1">Sistem Informasi Manajemen Aspirasi Legislatif</p>
                     </div>
                 ')
             )
@@ -86,12 +86,16 @@ class AdminPanelProvider extends PanelProvider
                 for: 'App\\Filament\\Admin\\Widgets'
             )
             ->widgets([
-                \Awcodes\Overlook\Widgets\OverlookWidget::class,
+                // \Awcodes\Overlook\Widgets\OverlookWidget::class,
                 \App\Filament\Admin\Widgets\StatistikAspirasi::class,
             ])
             ->navigationGroups([
                 NavigationGroup::make()
+                   ->label('Operasional'),
+                NavigationGroup::make()
                     ->label('Administration'),
+                NavigationGroup::make()
+                    ->label('Manajemen Website'),
             ])
             ->userMenuItems([
                 'profile' => MenuItem::make()
@@ -101,23 +105,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \Hasnayeen\Themes\ThemesPlugin::make(),
-                \Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin::make()->color('#29b'),
-                \DiogoGPinto\AuthUIEnhancer\AuthUIEnhancerPlugin::make()
-                    ->showEmptyPanelOnMobile(false)
-                    ->formPanelPosition('right')
-                    ->formPanelWidth('40%')
-                    ->emptyPanelBackgroundImageOpacity('70%')
-                    ->emptyPanelBackgroundImageUrl('https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bG9naW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60'),
-                \Awcodes\LightSwitch\LightSwitchPlugin::make()
-                    ->position(\Awcodes\LightSwitch\Enums\Alignment::BottomCenter)
-                    ->enabledOn([
-                        'auth.login',
-                        'auth.password',
-                    ]),
+                \Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin::make()->color('#f59e0b'),
+
                 \Awcodes\Overlook\OverlookPlugin::make()
                     ->includes([
                         \App\Filament\Admin\Resources\UserResource::class,
                     ]),
+
                 \Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin::make()
                     ->slug('my-profile')
                     ->setTitle('My Profile')

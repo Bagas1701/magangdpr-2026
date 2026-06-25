@@ -5,56 +5,157 @@
 [x-cloak] {
     display: none;
 }
+
 .grid-image .filepond--item {
     width: calc(33.3% - 0.5em);
 }
 
-.fi-btn-color-primary {
-    background-color: #facc15 !important;
-    color: #111827 !important;
+/* ================================
+   PORTAL ASPIRASI MANGIHUT SINAGA
+   Powered by SIMALEX v1.0
+================================ */
+
+/* Global admin background */
+.fi-body,
+.fi-main {
+    background:
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(47, 128, 237, 0.08), transparent 34%),
+        #f8fafc !important;
 }
 
-.fi-btn-color-primary:hover {
-    background-color: #eab308 !important;
+/* Sidebar */
+.fi-sidebar {
+    background: rgba(239, 246, 255, 0.86) !important;
+    border-right: 1px solid rgba(148, 163, 184, 0.25) !important;
 }
 
-.fi-link {
-    color: #ca8a04 !important;
-}
-
-.fi-link:hover {
-    color: #a16207 !important;
-}
-
-/* SIMALEX Login Branding */
-.fi-simple-layout {
-    background: #f8fafc;
-}
-
-.fi-simple-main {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border-radius: 24px !important;
-    padding: 42px !important;
-    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12) !important;
-    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+.fi-sidebar-header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.16) !important;
 }
 
 .fi-logo {
-    font-size: 1.15rem !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.04em !important;
-}
-
-.fi-simple-header-heading {
-    font-size: 1.75rem !important;
-    font-weight: 800 !important;
+    max-width: 220px !important;
+    white-space: normal !important;
+    line-height: 1.22 !important;
+    font-weight: 900 !important;
     color: #111827 !important;
 }
 
+.fi-sidebar-nav {
+    padding-top: 16px !important;
+}
+
+.fi-sidebar-item-label {
+    font-weight: 700 !important;
+}
+
+.fi-sidebar-item-button {
+    border-radius: 14px !important;
+    margin-inline: 10px !important;
+}
+
+.fi-sidebar-item-active > .fi-sidebar-item-button {
+    background: linear-gradient(135deg, #2563eb, #2f80ed) !important;
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.22) !important;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-label,
+.fi-sidebar-item-active .fi-sidebar-item-icon {
+    color: #ffffff !important;
+}
+
+.fi-sidebar-group-label {
+    font-size: 0.72rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    color: #64748b !important;
+}
+
+/* Topbar */
+.fi-topbar {
+    background: rgba(255, 255, 255, 0.78) !important;
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18) !important;
+}
+
+/* Page title */
+.fi-header-heading {
+    font-weight: 900 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.03em !important;
+}
+
+/* Cards / widgets */
+.fi-section,
+.fi-wi-stats-overview-stat,
+.fi-wi-widget .fi-section {
+    border-radius: 22px !important;
+    border: 1px solid rgba(148, 163, 184, 0.22) !important;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+}
+
+.fi-wi-stats-overview-stat {
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.fi-wi-stats-overview-stat::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: linear-gradient(180deg, #facc15, #f59e0b);
+}
+
+.fi-wi-stats-overview-stat-value {
+    font-size: 1.9rem !important;
+    font-weight: 900 !important;
+    color: #111827 !important;
+}
+
+.fi-wi-stats-overview-stat-label {
+    font-weight: 800 !important;
+    color: #475569 !important;
+}
+
+.fi-wi-stats-overview-stat-description {
+    font-weight: 600 !important;
+}
+
+/* Tables */
+.fi-ta {
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05) !important;
+}
+
+.fi-ta-header-cell-label {
+    font-weight: 900 !important;
+    color: #334155 !important;
+}
+
+/* Forms */
+.fi-input-wrp:focus-within,
+.fi-fo-textarea:focus-within,
+.fi-select-input:focus {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18) !important;
+}
+
+.fi-fo-field-wrp-label span {
+    font-weight: 700 !important;
+    color: #374151 !important;
+}
+
+/* Buttons */
 .fi-btn-color-primary {
     background: linear-gradient(135deg, #facc15, #f59e0b) !important;
     color: #111827 !important;
-    font-weight: 700 !important;
+    font-weight: 900 !important;
     border-radius: 12px !important;
     box-shadow: 0 12px 24px rgba(245, 158, 11, 0.24) !important;
 }
@@ -65,14 +166,82 @@
 
 .fi-link {
     color: #ca8a04 !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
 }
 
 .fi-link:hover {
     color: #92400e !important;
 }
 
-.fi-input-wrp:focus-within {
-    border-color: #f59e0b !important;
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18) !important;
+/* Login page */
+.fi-simple-layout {
+    background:
+        radial-gradient(circle at top left, rgba(250, 204, 21, 0.22), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(47, 128, 237, 0.16), transparent 32%),
+        linear-gradient(135deg, #f8fafc 0%, #eff6ff 45%, #fff7ed 100%) !important;
+}
+
+.fi-simple-main {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-radius: 28px !important;
+    padding: 42px !important;
+    box-shadow: 0 28px 80px rgba(15, 23, 42, 0.14) !important;
+    border: 1px solid rgba(148, 163, 184, 0.22) !important;
+}
+
+.fi-simple-header-heading {
+    font-size: 1.65rem !important;
+    font-weight: 900 !important;
+    color: #111827 !important;
+}
+
+/* Fix area kosong bawah admin */
+.fi-body {
+    background: #f8fafc !important;
+}
+
+.fi-main,
+.fi-main-ctn,
+.fi-page {
+    background: transparent !important;
+    min-height: auto !important;
+}
+
+.fi-page-content {
+    background: #ffffff !important;
+    border-radius: 24px 0 0 0;
+    padding-bottom: 24px !important;
+}
+
+/* Jangan tampilkan gradient panjang sampai bawah */
+.fi-main::before,
+.fi-main::after,
+.fi-page::before,
+.fi-page::after,
+.fi-body::before,
+.fi-body::after {
+    display: none !important;
+    content: none !important;
+}
+
+
+
+/* Fix user avatar dropdown kepotong saat zoom */
+.fi-dropdown-panel {
+    z-index: 99999 !important;
+    transform-origin: top right !important;
+}
+
+.fi-topbar {
+    overflow: visible !important;
+    z-index: 50 !important;
+}
+
+.fi-topbar nav {
+    overflow: visible !important;
+}
+
+/* Paksa dropdown user menu tidak ketarik/ketutup container */
+.fi-dropdown {
+    position: relative !important;
 }

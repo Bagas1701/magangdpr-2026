@@ -62,9 +62,9 @@
 }
 
 .simalex-flow-item.active {
-    background: linear-gradient(135deg, var(--simalex-primary), var(--simalex-primary-dark));
+    background: linear-gradient(135deg,#F7B500,#E0A100);
     color: #fff;
-    box-shadow: 0 20px 45px rgba(47, 128, 237, .22);
+    box-shadow: 0 20px 45px rgba(247,181,0,.24);
 }
 
 .simalex-flow-item.active span {
@@ -136,8 +136,8 @@
     width: 72px;
     height: 72px;
     border-radius: 24px;
-    background: #eaf3ff;
-    color: var(--simalex-primary);
+    background: #FFF7D6;
+    color: #D69E2E;
     display: flex;
     align-items: center;
     justify-content: center;

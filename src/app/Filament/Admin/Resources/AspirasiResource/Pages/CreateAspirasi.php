@@ -8,6 +8,7 @@ use App\Models\AspirasiStatusHistory;
 use App\Models\StatusAspirasi;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use App\Services\AspirasiNotificationService;
 
 class CreateAspirasi extends CreateRecord
 {
@@ -38,6 +39,8 @@ class CreateAspirasi extends CreateRecord
             'changed_by' => auth()->id(),
             'catatan' => 'Aspirasi dibuat dan masuk ke tahap awal.',
         ]);
+
+        AspirasiNotificationService::aspirasiMasuk($this->record);
     }
 
     protected function getCreatedNotification(): ?Notification

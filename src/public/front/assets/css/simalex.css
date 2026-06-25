@@ -1,11 +1,11 @@
 @import url('./simalex/base.css');
 @import url('./simalex/layout.css');
+@import url('./simalex/nova-skin.css');
 @import url('./simalex/header-navigation.css');
 @import url('./simalex/components.css');
 @import url('./simalex/hero-section.css');
 @import url('./simalex/feature-section.css');
 @import url('./simalex/about-section.css');
-@import url('./simalex/dashboard-preview.css');
 @import url('./simalex/tracking-public.css');
 @import url('./simalex/tracking-detail.css');
 @import url('./simalex/public-statistics.css');
@@ -16,4 +16,945 @@
 @import url('./simalex/mobile-navigation.css');
 @import url('./simalex/responsive.css');
 @import url('./simalex/override.css');
-@import url('./simalex/nova-skin.css');
+@import url('./simalex/dashboard-preview.css');
+
+/* =========================================================
+   FINAL SKIN - PORTAL ASPIRASI MANGIHUT SINAGA
+   Yellow premium public service theme
+   ========================================================= */
+
+:root {
+    --simalex-primary: #F7B500;
+    --simalex-primary-dark: #D99A00;
+    --simalex-primary-light: #FFE082;
+    --simalex-primary-soft: rgba(247, 181, 0, .13);
+    --simalex-accent: #FFD54F;
+
+    --simalex-bg: #FFFDF7;
+    --simalex-surface: rgba(255, 255, 255, .92);
+    --simalex-surface-solid: #ffffff;
+
+    --simalex-dark: #1F2937;
+    --simalex-text: #374151;
+    --simalex-muted: #6B7280;
+    --simalex-muted-2: #9CA3AF;
+
+    --simalex-border: rgba(247, 181, 0, .14);
+    --simalex-border-strong: rgba(247, 181, 0, .28);
+
+    --simalex-shadow-soft: 0 18px 45px rgba(247, 181, 0, .10);
+    --simalex-shadow-card: 0 28px 80px rgba(31, 41, 55, .10);
+    --simalex-shadow-button: 0 18px 42px rgba(247, 181, 0, .28);
+
+    /* =====================================================
+       CONTROL CENTER - EDIT ANGKA DI SINI SAJA
+       ===================================================== */
+
+    /* Navbar */
+    --navbar-logo-size: 70px;
+    --navbar-logo-x: 20px;
+    --navbar-logo-y: 0px;
+    --navbar-title-size: 20px;
+    --navbar-subtitle-size: 10px;
+    --navbar-brand-gap: 10px;
+
+    /* Mobile Navbar */
+    --mobile-menu-top: 74px;
+    --mobile-menu-padding: 14px;
+    --mobile-menu-radius: 22px;
+    --mobile-menu-gap: 8px;
+    --mobile-menu-link-height: 46px;
+    --mobile-menu-link-radius: 16px;
+
+    /* Hero */
+    --hero-title-size: 54px;
+    --hero-photo-height: 600px;
+    --hero-photo-right: 90px;
+    --hero-photo-bottom: 10px;
+    --hero-card-height: 500px;
+    --hero-profile-card-left: 160px;
+    --hero-profile-card-right: 35px;
+    --hero-profile-card-bottom: 35px;
+
+    /* Profil */
+    --profile-photo-height: 1100px;
+    --profile-photo-left: -90px;
+    --profile-photo-bottom: -150px;
+    --profile-card-height: 560px;
+
+    /* Font */
+    --section-title-size: 46px;
+    --section-desc-size: 16px;
+
+    /* Card / Statistik / Chart */
+    --card-radius: 24px;
+    --card-padding: 22px;
+    --stat-card-height: 120px;
+    --stat-number-size: 30px;
+    --stat-label-size: 13px;
+    --chart-height: 230px;
+    --chart-bar-height: 180px;
+    --chart-bar-width: 34px;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.simalex-shell {
+    background:
+        radial-gradient(circle at top left, rgba(247, 181, 0, .16), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255, 213, 79, .16), transparent 26%),
+        linear-gradient(135deg, #FFFDF7 0%, #FFF8E1 48%, #FFFFFF 100%) !important;
+}
+
+.simalex-panel::before {
+    background: rgba(247, 181, 0, .07) !important;
+}
+
+/* =========================================================
+   NAVBAR DESKTOP
+   ========================================================= */
+
+.header .navbar-area {
+    background: rgba(255, 255, 255, .92) !important;
+    border-bottom: 1px solid rgba(247, 181, 0, .16) !important;
+    box-shadow: 0 12px 38px rgba(31, 41, 55, .06) !important;
+}
+
+.mangihut-navbar-logo {
+    width: var(--navbar-logo-size) !important;
+    height: var(--navbar-logo-size) !important;
+    object-fit: contain !important;
+    border-radius: 12px !important;
+    position: relative !important;
+    left: var(--navbar-logo-x) !important;
+    top: var(--navbar-logo-y) !important;
+}
+
+.mangihut-brand-logo,
+.simalex-brand-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #F7B500, #FFD54F) !important;
+    color: #1F2937 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    box-shadow: 0 14px 34px rgba(247, 181, 0, .30) !important;
+}
+
+.simalex-brand,
+.mangihut-brand {
+    gap: var(--navbar-brand-gap) !important;
+}
+
+.simalex-brand strong,
+.mangihut-brand-text strong {
+    display: block !important;
+    font-size: var(--navbar-title-size) !important;
+    line-height: 1 !important;
+    font-weight: 900 !important;
+    color: #1F2937 !important;
+    letter-spacing: -0.02em !important;
+}
+
+.simalex-brand small,
+.mangihut-brand-text small {
+    display: block !important;
+    margin-top: 3px !important;
+    font-size: var(--navbar-subtitle-size) !important;
+    line-height: 1.1 !important;
+    color: #B7791F !important;
+    font-weight: 800 !important;
+}
+
+.header .navbar-area #nav6,
+body.simalex-home .header .navbar-area #nav6 {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.header .navbar-area #nav6 .nav-item .simalex-nav,
+body.simalex-home .header .navbar-area #nav6 .nav-item .simalex-nav {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 42px !important;
+    padding: 10px 18px !important;
+    border-radius: 999px !important;
+    border: 1px solid transparent !important;
+    color: #1F2937 !important;
+    background: transparent !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+    transition: .22s ease !important;
+}
+
+.header .navbar-area #nav6 .nav-item .simalex-nav.active,
+.header .navbar-area #nav6 .nav-item .simalex-nav:hover,
+body.simalex-home .header .navbar-area #nav6 .nav-item .simalex-nav.active,
+body.simalex-home .header .navbar-area #nav6 .nav-item .simalex-nav:hover {
+    background: #F7B500 !important;
+    color: #ffffff !important;
+    border-color: #F7B500 !important;
+    box-shadow: 0 8px 20px rgba(247, 181, 0, .22) !important;
+}
+
+.header .navbar-area #nav6 .nav-item .simalex-nav.active *,
+.header .navbar-area #nav6 .nav-item .simalex-nav:hover * {
+    color: #ffffff !important;
+}
+
+.simalex-admin-btn {
+    background: linear-gradient(135deg, #1F2937, #111827) !important;
+    color: #ffffff !important;
+    box-shadow: 0 14px 32px rgba(31, 41, 55, .22) !important;
+}
+
+/* =========================================================
+   MOBILE NAVBAR
+   ========================================================= */
+
+@media (max-width: 1280px) {
+    .header .navbar-area .navbar {
+        position: relative !important;
+    }
+
+    .header .navbar-area .navbar-toggler {
+        display: block !important;
+        margin-left: auto !important;
+        border: none !important;
+        padding: 8px !important;
+        box-shadow: none !important;
+    }
+
+    .header .navbar-area .navbar-toggler .toggler-icon {
+        display: block !important;
+        width: 26px !important;
+        height: 3px !important;
+        margin: 5px 0 !important;
+        border-radius: 999px !important;
+        background: #1F2937 !important;
+    }
+
+    .header .navbar-area .navbar-collapse {
+        position: absolute !important;
+        top: var(--mobile-menu-top) !important;
+        left: 12px !important;
+        right: 12px !important;
+        padding: var(--mobile-menu-padding) !important;
+        border-radius: var(--mobile-menu-radius) !important;
+        background: rgba(255, 255, 255, .98) !important;
+        border: 1px solid rgba(247, 181, 0, .18) !important;
+        box-shadow: 0 24px 70px rgba(31, 41, 55, .12) !important;
+        backdrop-filter: blur(18px) !important;
+        -webkit-backdrop-filter: blur(18px) !important;
+        z-index: 99999 !important;
+        animation: simalexMobileMenu .22s ease both;
+    }
+
+    .header .navbar-area .navbar-collapse:not(.show) {
+        display: none !important;
+    }
+
+    .header .navbar-area .navbar-collapse.show {
+        display: block !important;
+    }
+
+    .header .navbar-area #nav6,
+    body.simalex-home .header .navbar-area #nav6 {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: var(--mobile-menu-gap) !important;
+        width: 100% !important;
+    }
+
+    .header .navbar-area #nav6 .nav-item,
+    body.simalex-home .header .navbar-area #nav6 .nav-item {
+        width: 100% !important;
+    }
+
+    .header .navbar-area #nav6 .nav-item .simalex-nav,
+    body.simalex-home .header .navbar-area #nav6 .nav-item .simalex-nav {
+        width: 100% !important;
+        min-height: var(--mobile-menu-link-height) !important;
+        padding: 13px 18px !important;
+        justify-content: flex-start !important;
+        border-radius: var(--mobile-menu-link-radius) !important;
+    }
+
+    .header-action {
+        display: none !important;
+    }
+}
+
+@keyframes simalexMobileMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   BADGE / TITLE / BUTTON
+   ========================================================= */
+
+.simalex-badge {
+    background: rgba(247, 181, 0, .12) !important;
+    color: #B7791F !important;
+}
+
+.simalex-badge span {
+    background: #F7B500 !important;
+    box-shadow: 0 0 0 6px rgba(247, 181, 0, .14) !important;
+}
+
+.simalex-hero-title {
+    font-size: var(--hero-title-size) !important;
+}
+
+.simalex-hero-title span,
+.simalex-section-title span {
+    color: #F7B500 !important;
+}
+
+.simalex-section-title {
+    font-size: var(--section-title-size) !important;
+}
+
+.simalex-section-desc {
+    font-size: var(--section-desc-size) !important;
+}
+
+.simalex-primary-btn,
+.simalex-track-btn,
+.simalex-submit-btn {
+    background: linear-gradient(135deg, #F7B500, #D99A00) !important;
+    color: #ffffff !important;
+    box-shadow: 0 18px 45px rgba(247, 181, 0, .30) !important;
+}
+
+.simalex-primary-btn:hover,
+.simalex-track-btn:hover,
+.simalex-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 24px 60px rgba(247, 181, 0, .38) !important;
+}
+
+.simalex-outline-btn,
+.simalex-secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    padding: 0 28px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .8);
+    border: 1px solid rgba(247, 181, 0, .28);
+    color: #B7791F !important;
+    font-weight: 900;
+    text-decoration: none;
+}
+
+/* =========================================================
+   HERO FINAL
+   ========================================================= */
+
+.simalex-hero-wrapper {
+    padding: 28px 0 20px !important;
+}
+
+.simalex-hero-title {
+    max-width: 620px !important;
+}
+
+.simalex-hero-visual,
+.mangihut-hero-photo-card {
+    overflow: visible !important;
+}
+
+.mangihut-hero-photo-card {
+    position: relative !important;
+    min-height: var(--hero-card-height) !important;
+    border-radius: 34px !important;
+    background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(255,248,225,.82)) !important;
+    border: 1px solid rgba(247,181,0,.18) !important;
+    box-shadow: 0 32px 90px rgba(31,41,55,.10) !important;
+}
+
+.mangihut-hero-photo-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 34px;
+    background: linear-gradient(100deg, transparent 0%, transparent 46%, rgba(247,181,0,.18) 100%);
+    pointer-events: none;
+}
+
+.mangihut-hero-photo-card::after {
+    content: "";
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    bottom: -40px;
+    height: 200px;
+    background: linear-gradient(135deg, #F7B500, #FFD54F);
+    border-radius: 50% 50% 0 0;
+    z-index: 7 !important;
+}
+
+.mangihut-hero-photo {
+    position: absolute !important;
+    right: var(--hero-photo-right) !important;
+    bottom: var(--hero-photo-bottom) !important;
+    height: var(--hero-photo-height) !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    z-index: 6 !important;
+    filter: drop-shadow(0 20px 35px rgba(0,0,0,.15));
+}
+
+.mangihut-hero-profile-card {
+    position: absolute !important;
+    left: var(--hero-profile-card-left) !important;
+    right: var(--hero-profile-card-right) !important;
+    bottom: var(--hero-profile-card-bottom) !important;
+    z-index: 8 !important;
+    padding: 22px 26px !important;
+    border-radius: 24px !important;
+    background: rgba(255,255,255,.94) !important;
+    border: 1px solid rgba(247,181,0,.20) !important;
+    box-shadow: 0 20px 55px rgba(31,41,55,.14) !important;
+}
+
+.mangihut-hero-profile-card::before {
+    display: none !important;
+}
+
+.mangihut-hero-profile-card h5 {
+    font-size: 18px !important;
+    margin-bottom: 6px !important;
+}
+
+.mangihut-hero-profile-card p {
+    font-size: 14px !important;
+    margin-bottom: 4px !important;
+}
+
+.mangihut-hero-profile-card span {
+    font-size: 13px !important;
+    color: #B7791F !important;
+}
+
+.simalex-floating-1 {
+    top: 92px !important;
+    left: 28px !important;
+}
+
+.simalex-floating-2 {
+    right: 24px !important;
+    bottom: 86px !important;
+    z-index: 9 !important;
+}
+
+.simalex-mini-stats {
+    margin-top: 34px !important;
+    padding: 22px 26px !important;
+    border-radius: 24px !important;
+    background: rgba(255,255,255,.76) !important;
+    border: 1px solid rgba(247,181,0,.14) !important;
+    box-shadow: 0 18px 45px rgba(31,41,55,.06) !important;
+    max-width: 620px !important;
+}
+
+.simalex-mini-stat {
+    min-width: 135px !important;
+}
+
+.simalex-mini-stat span {
+    color: #8A6A12 !important;
+    font-weight: 700 !important;
+}
+
+/* =========================================================
+   PROFIL BELIAU FINAL
+   ========================================================= */
+
+.mangihut-profile-section {
+    width: 100%;
+}
+
+.mangihut-profile-photo-wrap {
+    position: relative;
+    min-height: var(--profile-card-height) !important;
+    border-radius: 34px;
+    background:
+        radial-gradient(circle at center, rgba(247,181,0,.22), transparent 58%),
+        linear-gradient(135deg, #fff8df, #ffffff);
+    border: 1px solid rgba(247,181,0,.16);
+    box-shadow: 0 28px 80px rgba(31,41,55,.08);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.mangihut-profile-photo-wrap::after {
+    content: "";
+    position: absolute;
+    left: -80px;
+    right: -80px;
+    bottom: -130px;
+    height: 260px;
+    background: linear-gradient(135deg, #F7B500, #FFD54F);
+    border-radius: 50% 50% 0 0;
+    z-index: 1;
+}
+
+.mangihut-profile-photo {
+    position: absolute !important;
+    height: var(--profile-photo-height) !important;
+    left: var(--profile-photo-left) !important;
+    bottom: var(--profile-photo-bottom) !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    z-index: 2 !important;
+    filter: drop-shadow(0 24px 30px rgba(31,41,55,.18));
+}
+
+.mangihut-profile-content {
+    padding: 0;
+}
+
+.mangihut-profile-subtitle {
+    color: #1F2937;
+    font-weight: 900;
+    margin-bottom: 14px;
+}
+
+.mangihut-profile-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 26px;
+    align-items: stretch;
+}
+
+.mangihut-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    min-height: 92px;
+    padding: 18px 20px;
+    border-radius: 18px;
+
+    background: #fff;
+    border: 1px solid rgba(247,181,0,.18);
+    box-shadow: 0 14px 34px rgba(31,41,55,.055);
+}
+
+.mangihut-profile-info i,
+.mangihut-commitment-card i {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 14px;
+    background: #FFF4D4;
+    color: #B7791F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* flex-shrink: 0; */
+}
+
+.mangihut-commitment-area {
+    margin-top: 30px;
+}
+
+.mangihut-commitment-title {
+    color: #B7791F;
+    font-weight: 900;
+    margin-bottom: 14px;
+}
+
+.mangihut-profile-info div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mangihut-profile-info span,
+.mangihut-profile-info small {
+    line-height: 1.35;
+}
+
+.mangihut-commitment-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.mangihut-commitment-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px;
+    min-height: 92px;
+    border-radius: 22px;
+    background: #fff;
+    border: 1px solid rgba(247,181,0,.18);
+    box-shadow: 0 14px 34px rgba(31,41,55,.055);
+}
+
+.mangihut-commitment-card span {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.55;
+    color: #374151;
+}
+
+/* =========================================================
+   FEATURE / WORKFLOW / TRACKING / CONTACT SKIN
+   ========================================================= */
+
+.simalex-flow-item {
+    border: 1px solid rgba(247, 181, 0, .14) !important;
+    box-shadow: 0 14px 36px rgba(31, 41, 55, .06) !important;
+}
+
+.simalex-flow-item span {
+    background: #FFF7D6 !important;
+    color: #B7791F !important;
+}
+
+.simalex-flow-item.active {
+    background: linear-gradient(135deg, #F7B500, #D99A00) !important;
+    color: #ffffff !important;
+    box-shadow: 0 20px 45px rgba(247, 181, 0, .28) !important;
+}
+
+.simalex-flow-item.active span {
+    background: rgba(255, 255, 255, .22) !important;
+    color: #ffffff !important;
+}
+
+.single-feature.simalex-feature-card,
+.simalex-about-main-card,
+.simalex-dashboard-showcase,
+.simalex-tracking-card,
+.simalex-contact-card {
+    border: 1px solid rgba(247, 181, 0, .13) !important;
+    box-shadow: 0 28px 80px rgba(31, 41, 55, .09) !important;
+}
+
+.single-feature.simalex-feature-card::before,
+.simalex-about-main-card::before,
+.simalex-dashboard-showcase::before,
+.simalex-tracking-card::before,
+.simalex-contact-card::before {
+    background: rgba(247, 181, 0, .09) !important;
+}
+
+.single-feature.simalex-feature-card::after {
+    background: linear-gradient(90deg, transparent, rgba(247, 181, 0, .45), transparent) !important;
+}
+
+.single-feature.simalex-feature-card .icon,
+.simalex-tracking-mini-card i,
+.simalex-preview-step span,
+.simalex-attachment-icon,
+.simalex-contact-info-item .icon {
+    background: #FFF7D6 !important;
+    color: #B7791F !important;
+}
+
+.single-feature.simalex-feature-card:hover .icon,
+.simalex-contact-icon,
+.simalex-tracking-icon,
+.simalex-about-item .icon {
+    background: linear-gradient(135deg, #F7B500, #D99A00) !important;
+    color: #ffffff !important;
+    box-shadow: 0 16px 40px rgba(247, 181, 0, .28) !important;
+}
+
+.simalex-card-label {
+    color: #B7791F !important;
+}
+
+.simalex-about-summary div,
+.simalex-dashboard-stat,
+.simalex-dashboard-kpi div,
+.simalex-recent-item,
+.simalex-result-info,
+.timeline-content,
+.simalex-tracking-points div,
+.simalex-tracking-mini-card,
+.simalex-tracking-preview,
+.simalex-tracking-example,
+.simalex-contact-info-item,
+.simalex-contact-note,
+.simalex-form-note,
+.simalex-consent-box,
+.simalex-file-upload-box,
+.simalex-selected-file {
+    background: rgba(255, 255, 255, .86) !important;
+    border: 1px solid rgba(247, 181, 0, .13) !important;
+    box-shadow: 0 12px 35px rgba(31, 41, 55, .05) !important;
+}
+
+.simalex-about-step:not(:last-child)::before,
+.simalex-preview-line,
+.simalex-result-timeline-item::before {
+    background: #FFE8A3 !important;
+}
+
+.simalex-about-step.completed .step-dot,
+.simalex-about-step.active .step-dot,
+.timeline-marker,
+.simalex-preview-step.active span {
+    background: #F7B500 !important;
+    box-shadow: 0 0 0 6px rgba(247, 181, 0, .18) !important;
+}
+
+.simalex-preview-step.active {
+    color: #B7791F !important;
+}
+
+.simalex-ticket-input input,
+.simalex-form-control {
+    background: #FFFDF7 !important;
+    border: 1px solid rgba(247, 181, 0, .20) !important;
+}
+
+.simalex-ticket-input input:focus,
+.simalex-form-control:focus {
+    border-color: #F7B500 !important;
+    box-shadow: 0 0 0 5px rgba(247, 181, 0, .13) !important;
+}
+
+.simalex-file-upload-btn {
+    background: rgba(247, 181, 0, .13) !important;
+    color: #B7791F !important;
+}
+
+.simalex-file-upload-btn:hover {
+    background: #F7B500 !important;
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   DASHBOARD / TABLE / CHART CONTROL
+   ========================================================= */
+
+.simalex-dashboard-stat {
+    min-height: var(--stat-card-height) !important;
+}
+
+.simalex-dashboard-stat strong {
+    font-size: var(--stat-number-size) !important;
+}
+
+.simalex-dashboard-stat small {
+    font-size: var(--stat-label-size) !important;
+}
+
+.simalex-dashboard-stat,
+.simalex-dashboard-kpi div,
+.simalex-chart-card,
+.simalex-recent-card,
+.simalex-flow-item,
+.simalex-about-main-card,
+.simalex-contact-card,
+.simalex-tracking-card,
+.simalex-contact-info-item {
+    border-radius: var(--card-radius) !important;
+}
+
+.simalex-chart-card,
+.simalex-recent-card,
+.simalex-contact-card,
+.simalex-tracking-card {
+    padding: var(--card-padding) !important;
+}
+
+.simalex-chart-bars {
+    height: var(--chart-height) !important;
+}
+
+.simalex-chart-bar-wrap {
+    height: var(--chart-bar-height) !important;
+}
+
+.simalex-chart-bar {
+    width: var(--chart-bar-width) !important;
+}
+
+/* =========================================================
+   FOOTER / SCROLLBAR
+   ========================================================= */
+
+.footer {
+    background: rgba(255, 255, 255, .82) !important;
+    border-top: 1px solid rgba(247, 181, 0, .14) !important;
+}
+
+.simalex-footer-link {
+    color: #B7791F !important;
+}
+
+.simalex-panel::-webkit-scrollbar-thumb {
+    background: rgba(247, 181, 0, .35) !important;
+}
+
+.simalex-floating-card {
+    box-shadow: 0 16px 50px rgba(31, 41, 55, .10) !important;
+}
+
+.simalex-floating-card i {
+    color: #F7B500 !important;
+}
+
+/* =========================================================
+   PRIVACY PAGE / TRACKING DETAIL
+   ========================================================= */
+
+.privacy-page {
+    min-height: 100vh;
+    padding: 48px 24px;
+    background: #f3f8ff;
+}
+
+.privacy-card {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px;
+    background: #fff;
+    border-radius: 28px;
+}
+
+.privacy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.privacy-badge,
+.privacy-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #fff4cf;
+    color: #b77900;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.privacy-back:hover {
+    background: #f5c542;
+    color: #fff;
+}
+
+body.simalex-tracking-detail .header {
+    display: none !important;
+}
+
+body.simalex-tracking-detail .simalex-shell {
+    top: 0 !important;
+}
+
+.simalex-back-track-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid rgba(247, 181, 0, .25);
+    color: #B7791F !important;
+    font-size: 13px;
+    font-weight: 900;
+    text-decoration: none;
+    box-shadow: 0 12px 32px rgba(31, 41, 55, .08);
+}
+
+.simalex-back-track-btn:hover {
+    background: #F7B500;
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 991px) {
+    :root {
+        --navbar-logo-size: 52px;
+        --navbar-title-size: 18px;
+        --hero-title-size: 42px;
+        --section-title-size: 36px;
+
+        --hero-photo-height: 300px;
+        --hero-photo-bottom: 120px;
+        --hero-card-height: 500px;
+
+        --profile-photo-height: 420px;
+        --profile-photo-left: 50%;
+        --profile-photo-bottom: 0px;
+        --profile-card-height: 460px;
+    }
+
+    .mangihut-hero-photo-card {
+        overflow: hidden !important;
+    }
+
+    .mangihut-hero-photo {
+        right: 50% !important;
+        transform: translateX(50%) !important;
+    }
+
+    .mangihut-profile-photo {
+        transform: translateX(-50%) !important;
+    }
+
+    .mangihut-hero-profile-card {
+        left: 20px !important;
+        right: 20px !important;
+        bottom: 22px !important;
+    }
+
+    .mangihut-profile-info-grid,
+    .mangihut-commitment-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+#hero {
+    display: flex;
+    align-items: center;
+}
+
+#hero .container {
+    width: 100%;
+}
+

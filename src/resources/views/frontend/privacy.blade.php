@@ -1,123 +1,65 @@
-@extends('frontend.layouts.app')
-
-@section('title', 'Kebijakan Privasi - SIMALEX')
-@section('body_class', 'tracking-page')
+@extends('frontend.layouts.blank')
 
 @section('content')
+<section class="privacy-page">
+    <div class="privacy-card">
 
-<main class="simalex-tracking-page">
+        <div class="privacy-header">
 
-    <div class="container">
-
-        <div class="simalex-result-card">
-
-            <div class="text-center mb-5">
-
-                <div class="simalex-badge">
-                    <span></span>
-                    Kebijakan Privasi
-                </div>
-
-                <h2 class="mt-4">
-                    Perlindungan Data Pengguna SIMALEX
-                </h2>
-
-                <p class="text-muted">
-                    SIMALEX berkomitmen untuk menjaga kerahasiaan dan keamanan
-                    data pribadi masyarakat yang disampaikan melalui sistem aspirasi.
-                </p>
-
+            <div class="privacy-badge">
+                Kebijakan Privasi
             </div>
 
-            <div class="simalex-result-section">
-
-                <div class="simalex-result-section-title">
-                    1. Pengumpulan Data
-                </div>
-
-                <p>
-                    SIMALEX mengumpulkan informasi yang diberikan secara sukarela
-                    oleh pengguna, seperti nama, NIK, nomor kontak, isi aspirasi,
-                    lokasi kejadian, dan lampiran pendukung yang diperlukan untuk
-                    proses verifikasi dan tindak lanjut aspirasi.
-                </p>
-
-            </div>
-
-            <div class="simalex-result-section">
-
-                <div class="simalex-result-section-title">
-                    2. Penggunaan Data
-                </div>
-
-                <p>
-                    Data yang dikirimkan hanya digunakan untuk keperluan
-                    pengelolaan aspirasi, verifikasi laporan, koordinasi tindak lanjut,
-                    dan penyusunan statistik layanan secara agregat.
-                </p>
-
-            </div>
-
-            <div class="simalex-result-section">
-
-                <div class="simalex-result-section-title">
-                    3. Kerahasiaan Informasi
-                </div>
-
-                <p>
-                    Data pribadi pengguna tidak dipublikasikan kepada masyarakat.
-                    Informasi hanya dapat diakses oleh petugas yang memiliki
-                    kewenangan sesuai tugas dan tanggung jawabnya.
-                </p>
-
-            </div>
-
-            <div class="simalex-result-section">
-
-                <div class="simalex-result-section-title">
-                    4. Keamanan Data
-                </div>
-
-                <p>
-                    SIMALEX menerapkan mekanisme keamanan sistem seperti validasi
-                    data, pembatasan akses berbasis peran (RBAC), HTTPS,
-                    serta pengelolaan dokumen secara terstruktur untuk menjaga
-                    keamanan informasi yang tersimpan.
-                </p>
-
-            </div>
-
-            <div class="simalex-result-section">
-
-                <div class="simalex-result-section-title">
-                    5. Hak Pengguna
-                </div>
-
-                <p>
-                    Pengguna berhak mengetahui status aspirasi yang diajukan
-                    melalui nomor tiket yang diberikan oleh sistem setelah
-                    proses pengiriman berhasil dilakukan.
-                </p>
-
-            </div>
-
-            <div class="simalex-result-section">
-
-                <div class="simalex-result-section-title">
-                    6. Persetujuan Pengguna
-                </div>
-
-                <p>
-                    Dengan mengirimkan aspirasi melalui SIMALEX, pengguna dianggap
-                    telah membaca, memahami, dan menyetujui kebijakan privasi ini.
-                </p>
-
-            </div>
+            <a href="{{ route('frontend.home') }}" class="privacy-back">
+                ← Kembali ke Beranda
+            </a>
 
         </div>
 
+        <h1>Perlindungan Data Pengguna Portal Aspirasi Mangihut Sinaga</h1>
+
+        <p class="privacy-subtitle">
+            Portal Aspirasi Mangihut Sinaga berkomitmen menjaga kerahasiaan dan keamanan data masyarakat
+            yang disampaikan melalui formulir aspirasi.
+        </p>
+
+        <h3>1. Pengumpulan Data</h3>
+        <p>
+            Sistem mengumpulkan data yang diberikan secara sukarela oleh pengguna, seperti nama,
+            NIK, nomor kontak, alamat, isi aspirasi, lokasi kejadian, serta lampiran pendukung
+            yang diperlukan untuk proses verifikasi dan tindak lanjut.
+        </p>
+
+        <h3>2. Penggunaan Data</h3>
+        <p>
+            Data hanya digunakan untuk pencatatan, verifikasi, pengelolaan aspirasi,
+            koordinasi tindak lanjut, dan penyusunan statistik layanan secara agregat.
+        </p>
+
+        <h3>3. Kerahasiaan Informasi</h3>
+        <p>
+            Data pribadi pengguna tidak dipublikasikan kepada masyarakat umum. Informasi hanya
+            dapat diakses oleh petugas yang memiliki kewenangan sesuai tugas dan tanggung jawabnya.
+        </p>
+
+        <h3>4. Keamanan Data</h3>
+        <p>
+            Sistem menerapkan pembatasan akses berbasis peran, validasi data, pengelolaan dokumen,
+            serta mekanisme keamanan sistem untuk menjaga informasi yang tersimpan.
+        </p>
+
+        <h3>5. Hak Pengguna</h3>
+        <p>
+            Pengguna dapat mengetahui status aspirasi melalui nomor tiket yang diberikan setelah
+            pengiriman aspirasi berhasil dilakukan.
+        </p>
+
+        <h3>6. Persetujuan Pengguna</h3>
+        <p>
+            Dengan mengirimkan aspirasi melalui portal ini, pengguna dianggap telah membaca,
+            memahami, dan menyetujui kebijakan privasi ini.
+        </p>
+
     </div>
-
-</main>
-
+</section>
 @endsection
